@@ -8,6 +8,7 @@ In this project we aim to explore the landscape for FaaS (Function as a Service)
 
 run frontend:
 
+    cd Frontend/src
     npm start
 
 run middleware: 
