@@ -1,5 +1,6 @@
 
 const loginForm = document.getElementById("login-form");
+const goButton = document.getElementById("go-function");
 
 
           
@@ -39,4 +40,11 @@ loginForm.addEventListener("submit", async (event) => {
   //   // Handle login error
   //   console.error("Login failed");
   // }
+});
+
+goButton.addEventListener("click", async(event) =>{
+  event.preventDefault();
+  
+
+
 });
