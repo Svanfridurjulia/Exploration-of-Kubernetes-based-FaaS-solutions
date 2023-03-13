@@ -39,11 +39,11 @@ export const LogIn = () => {
           <form id="login-form" onSubmit={handleSubmit}>
               <div>
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange}></input>
+                <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required></input>
               </div>
               <div>
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" value={formData.password} onChange={handleInputChange}></input>
+                <input type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} required></input>
               </div>
               <div className="ErrorMessage">
                 <p>{loginError}</p>

@@ -36,8 +36,26 @@ app.all('/function/nodetest', (req, res) => {
       });
 });
 
-app.all('/function2', (req, res) => {
+app.all('/function/basego', (req, res) => {
   // Call OpenFaaS function 2 and forward the request
+  fetch('http://localhost:8080/function/basego', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Response not okay');
+            }
+            return response.text();
+        })
+        .then(text => {
+            res.send(JSON.stringify(text));
+        })
+      .catch(error => {
+        console.log(error);
+      });
 });
 
 // ...

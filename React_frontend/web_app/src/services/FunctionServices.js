@@ -19,6 +19,25 @@ async function NodeFunction(data){
   }
 }
 
+async function goFunction() {
+
+  try {
+    const resp = await fetch(FUNCTIONS_URL + 'basego', {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+        
+            }});
+    const returnData = await resp.json();
+    return returnData;
+
+  } catch (error) {
+    console.error(error);
+  }
+
+}
+
 module.exports = {
-    NodeFunction
+    NodeFunction,
+    goFunction
 }
