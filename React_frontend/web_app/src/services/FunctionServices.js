@@ -37,7 +37,26 @@ async function goFunction() {
 
 }
 
+async function pythonFunction(data) {
+  try {
+    const resp = await fetch(FUNCTIONS_URL + 'hello-python', {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+    const returnData = await resp.json();
+    return returnData;
+
+  } catch (error) {
+    console.error(error);
+  }
+
+}
+
 module.exports = {
     NodeFunction,
-    goFunction
+    goFunction,
+    pythonFunction
 }

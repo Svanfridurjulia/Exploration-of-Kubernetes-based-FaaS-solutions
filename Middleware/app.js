@@ -58,6 +58,28 @@ app.all('/function/basego', (req, res) => {
       });
 });
 
+app.all('/function/hello-python', (req, res) => {
+  fetch('http://localhost:8080/function/hello-python', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(req.body)
+    })
+      .then(response => {
+          if (!response.ok) {
+          throw new Error('Response not okay');
+          }
+          return response.text();
+      })
+      .then(text => {
+          res.send(JSON.stringify(text));
+      })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
 // ...
 
 app.listen(3005, () => {
