@@ -1,4 +1,6 @@
 
+
+
 const FUNCTIONS_URL = 'http://localhost:3005/function/';
 
 async function NodeFunction(data){
@@ -46,7 +48,9 @@ async function pythonFunction(data) {
             },
             body: JSON.stringify(data)
           });
+    
     const returnData = await resp.json();
+    console.log(returnData);
     return returnData;
 
   } catch (error) {
@@ -54,6 +58,7 @@ async function pythonFunction(data) {
   }
 
 }
+
 
 module.exports = {
     NodeFunction,

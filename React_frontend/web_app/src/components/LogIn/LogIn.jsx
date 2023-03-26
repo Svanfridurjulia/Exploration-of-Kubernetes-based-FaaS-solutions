@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { NodeFunction } from "../../services/FunctionServices";
 import { useNavigate } from 'react-router-dom';
+import { setCurrentUser } from "../../services/userService";
 import './styles.css';
 
 
@@ -18,6 +19,7 @@ export const LogIn = () => {
         event.preventDefault();
         const response = await NodeFunction(formData);
         if (response.statusCode == 200){
+            setCurrentUser(formData.username);
             navigate('/dashboard');
             }
         else {

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { goFunction } from "../../services/FunctionServices";
 import { useNavigate } from 'react-router-dom';
+import { setCurrentUser } from "../../services/userService";
 import './styles.css';
 
 
@@ -18,6 +19,7 @@ export const SignUp = () => {
         // const response = await NodeFunction(formData);
         const response = await goFunction();
         console.log(response);
+        setCurrentUser(formData.username);
         navigate('/dashboard');
     }
     

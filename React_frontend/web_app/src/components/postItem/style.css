@@ -1,0 +1,19 @@
+.postContainer {
+    display: flex;
+    padding-top: 30px;
+    justify-content: center;
+}
+
+.post {
+    border: 1px solid black;
+    width: 40%;
+}
+
+.info  {
+    font-size: small;
+    padding-left: 400px;
+}
+
+.translation {
+    font-style: italic;
+}
