@@ -7,12 +7,14 @@ import bodyParser from 'body-parser';
 // const middleware = require('./middleware');
 const app = express();
 
+const URL = 'http://a18983579ab35409298ddbf805c122d5-969766123.eu-west-1.elb.amazonaws.com:8080/function/';
+
 
 app.use(middleware);
 app.use(bodyParser.json());
 
 app.all('/function/nodetest', (req, res) => {
-    fetch('http://localhost:8080/function/nodetest', {
+    fetch(URL + 'nodetest', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -21,6 +23,7 @@ app.all('/function/nodetest', (req, res) => {
       })
         .then(response => {
             if (!response.ok) {
+              console.log(response.text);
             throw new Error('Response not okay');
             }
             return response.text();
@@ -38,7 +41,7 @@ app.all('/function/nodetest', (req, res) => {
 
 app.all('/function/basego', (req, res) => {
   // Call OpenFaaS function 2 and forward the request
-  fetch('http://localhost:8080/function/basego', {
+  fetch(URL + 'basego', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -59,7 +62,7 @@ app.all('/function/basego', (req, res) => {
 });
 
 app.all('/function/hello-python', (req, res) => {
-  fetch('http://localhost:8080/function/hello-python', {
+  fetch(URL + 'hello-python', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -68,6 +71,7 @@ app.all('/function/hello-python', (req, res) => {
     })
       .then(response => {
           if (!response.ok) {
+            console.log(response);
           throw new Error('Response not okay');
           }
           return response.text();
