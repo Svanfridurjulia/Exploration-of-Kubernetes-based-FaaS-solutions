@@ -1,0 +1,38 @@
+.writePost {
+    width: 500px;
+    height: 100px;
+    text-align: left;
+    padding: 8px;
+    vertical-align:top;
+    resize: none; 
+}
+
+
+.banner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.leftElement {
+    flex: 0;
+    align-self: center;
+    width: 50px;
+}
+
+.centerElement {
+    flex: 1;
+    text-align: center;
+    align-self: center;
+    margin-right: 140px;
+    width: 200px;
+    margin-left: 100px;
+}
+
+/* .dashboard {
+    width: 400px;
+    justify-content: center;
+    justify-content: center;
+    align-self: center;
+    text-align: center;
+} */

@@ -19,14 +19,11 @@ export const UserButton = ({option1, link1, option2, link2}) => {
                 <FontAwesomeIcon icon={faUser} />
             </button>
             {(dropdown) ? (
-                    <ul className="menu">
-                        <li className="menu-item">
-                            <button><Link to={link1}>{option1}</Link></button>
-                        </li>
-                        <li className="menu-item">
-                            <button><Link to={link2}>{option2}</Link></button>
-                        </li>
-                    </ul>
+                    <div className="dropdown">
+                         {/* onClick={goToLink(link1)} */}
+                        <button className="dropButton"><Link className="linked" to={link1}>{option1}</Link></button>
+                        <button className="dropButton"><Link className="linked" to={link2}>{option2}</Link></button>
+                    </div>
                 )
                 :(
                     null
