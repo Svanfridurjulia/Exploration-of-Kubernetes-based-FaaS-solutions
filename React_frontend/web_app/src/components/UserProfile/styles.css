@@ -1,0 +1,22 @@
+
+.banner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.leftElement {
+    flex: 0;
+    align-self: center;
+    width: 50px;
+}
+
+.centerElement {
+    flex: 1;
+    text-align: center;
+    align-self: center;
+    margin-right: 140px;
+    width: 200px;
+    margin-left: 100px;
+}
+

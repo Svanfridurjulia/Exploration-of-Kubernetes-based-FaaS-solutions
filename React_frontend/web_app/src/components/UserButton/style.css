@@ -1,5 +1,7 @@
 .userContainer {
-    display: flex;
+    /* display: flex; */
+    width: 100px;
+    margin-left: 15px;
 }
 
 .userButton {
@@ -8,8 +10,28 @@
     color: #fff;
     padding: 10px 20px;
     margin-left: 40px;
-    margin-top: 40px;
+    margin-top: 0px;
     border-radius: 5px;
     border: none;
     cursor: pointer;
+}
+
+.dropdown {
+    position: absolute;
+    margin: 0px;
+    width: 150px;
+    justify-content: center;
+    text-align: center;
+    padding-right: 10px;
+}
+
+.dropButton {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    
+}
+
+.linked {
+    text-decoration:none;
+    color: white;
 }
