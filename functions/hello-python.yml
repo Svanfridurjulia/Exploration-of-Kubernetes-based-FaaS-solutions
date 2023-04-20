@@ -6,5 +6,5 @@ functions:
   hello-python:
     lang: python
     handler: ./hello-python
-    image: svanfridurjulia/hello-python:latest
+    image: svanfridurjulia/hello-python:flask-version
 
