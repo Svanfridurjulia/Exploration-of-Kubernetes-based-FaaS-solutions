@@ -1,0 +1,15 @@
+.userContainer {
+    display: flex;
+}
+
+.userButton {
+    justify-self: flex-start;
+    background-color: pink;
+    color: #fff;
+    padding: 10px 20px;
+    margin-left: 40px;
+    margin-top: 40px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
