@@ -27,23 +27,30 @@ export const SignUp = () => {
         const {name, value} = event.target;
         setFormData({ ...formData, [name]: value });
     }
-    
-    
+
+    const goBack = () => {
+      navigate("/");
+    }
     
     return(
+      <div>
+        <h1>Sign Up</h1>
+        <div className="buttonDiv">
+          <button className="backButton" onClick={goBack}>Back</button>
+        </div>
         <div id="signUp" className="signUpContainer">
           <form id="signup-form" onSubmit={handleSubmit}>
             <div>
                 <label for="username">Name:</label>
-                <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required></input>
+                <input placeholder="Your Full Name..." type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required></input>
               </div>
               <div>
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required></input>
+                <input placeholder="Your Username..." type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required></input>
               </div>
               <div>
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} required></input>
+                <input placeholder="Your Password..." type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} required></input>
               </div>
               <div className="ErrorMessage">
                 <p>{signUpError}</p>
@@ -53,5 +60,7 @@ export const SignUp = () => {
               </div>
             </form>
         </div>
+      </div>
+        
     )
 }

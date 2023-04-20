@@ -13,12 +13,15 @@ export const LogIn = () => {
     const [loginError, setLoginError] = useState('');
     const navigate = useNavigate()
 
+    const goBack = () => {
+      navigate("/");
+    }
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const response = await NodeFunction(formData);
-        if (response.statusCode == 200){
+        if (response.statusCode === 200){
             setCurrentUser(formData.username);
             navigate('/dashboard');
             }
@@ -37,23 +40,30 @@ export const LogIn = () => {
     
     
     return(
-        <div id="login" className="loginContainer">
-          <form id="login-form" onSubmit={handleSubmit}>
-              <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required></input>
-              </div>
-              <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} required></input>
-              </div>
-              <div className="ErrorMessage">
-                <p>{loginError}</p>
-              </div>
-              <div>
-                <button type="submit" >Log in</button>
-              </div>
-            </form>
+        <div>
+          <h1>Log In</h1>
+          <div className="buttonDiv">
+            <button className="backButton" onClick={goBack}>Back</button>
+          </div>
+          <div id="login" className="loginContainer">
+            <form id="login-form" onSubmit={handleSubmit}>
+                <div>
+                  <label for="username">Username</label>
+                  <input placeholder="Your Username..." type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required></input>
+                </div>
+                <div>
+                  <label for="password">Password</label>
+                  <input placeholder="Your Password..." type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} required></input>
+                </div>
+                <div className="ErrorMessage">
+                  <p>{loginError}</p>
+                </div>
+                <div>
+                  <button type="submit" >Log in</button>
+                </div>
+              </form>
+          </div>
         </div>
+        
     )
 }
