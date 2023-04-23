@@ -1,3 +1,5 @@
+// Disclaimer: This function is not meant to show the right way to generate passwords, it is written to show a working Go function with OpenFaaS
+
 package function
 
 import (
@@ -70,22 +72,8 @@ func generatePassword() string {
 }
 
 func Handle(w http.ResponseWriter, r *http.Request) {
-	//var input string
 
-	if r.Body != nil {
-		defer r.Body.Close()
-		/*
-			body, err := io.ReadAll(r.Body)
-
-			if err != nil {
-				w.WriteHeader(http.StatusBadRequest)
-				w.Write([]byte(fmt.Sprintf("Invalid request body")))
-				return
-			}
-
-			input = makeString(body)*/
-
-	}
+	defer r.Body.Close()
 
 	password := generatePassword()
 
