@@ -21,7 +21,7 @@ export const Dashboard = () => {
     return (
         <div>
             <div className="banner">
-                <div className="leftElement"><UserButton option1="Posts" link1="/posts" option2="Log Out" link2="/"/></div>
+                <div className="leftElement"><UserButton option1="My Posts" link1="/posts" option2="Log Out" link2="/"/></div>
                 <div className="centerElement"><h1 className="bannerTopic">Dashboard</h1></div>                
             </div>
             

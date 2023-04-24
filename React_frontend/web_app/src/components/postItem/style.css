@@ -22,6 +22,9 @@
 
 .postMessage {
     text-align: center;
+    width: 98%;
+    margin-left: 5px;
+    margin-right: 20px;
 }
 .translation {
     font-style: italic;
