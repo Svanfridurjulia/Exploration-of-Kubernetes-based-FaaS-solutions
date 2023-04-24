@@ -1,8 +1,8 @@
-import { PostItem } from "../postItem/PostItem"
+import { PostItem } from "../PostItem/PostItem"
 
 export const Posts = ({posts}) => {
 
-    if (posts.length == 0) {
+    if (posts.length === 0) {
         return;
     }
 
