@@ -36,3 +36,10 @@
     align-self: center;
     text-align: center;
 } */
+
+.rightElement {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    width: 300px;
+}

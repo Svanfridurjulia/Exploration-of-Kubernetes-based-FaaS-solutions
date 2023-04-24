@@ -58,3 +58,21 @@ label {
     font-weight: 700;
     font-size: 18px;
 }
+
+.diceButton {
+    width: auto;
+    height: 30px;
+    font-size: medium;
+    margin: 10px;
+    padding: 5px;
+}
+
+.pw {
+    font-size: medium;
+    margin: 5px;
+}
+
+
+.subButton {
+    margin-top: 5px;
+}

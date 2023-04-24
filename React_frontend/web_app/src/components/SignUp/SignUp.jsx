@@ -6,6 +6,9 @@ import './styles.css';
 
 
 export const SignUp = () => {
+    const [pwGenerated, setPwGenerated] = useState(false);
+    const [pw, setPw] = useState("");
+
     const [formData, setFormData] = useState({
         name: "",
         username: "",
@@ -31,6 +34,12 @@ export const SignUp = () => {
     const goBack = () => {
       navigate("/");
     }
+
+    const randomPw = () => {
+      // Call the appropriate OpenFaaS function
+      setPwGenerated(true);
+      setPw("ThisIsARandomPw");
+    }
     
     return(
       <div>
@@ -52,11 +61,23 @@ export const SignUp = () => {
                 <label for="password">Password:</label>
                 <input placeholder="Your Password..." type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} required></input>
               </div>
+              <div className="pwGenerator">
+                <button type="button" onClick={randomPw} className="diceButton">Generate random password</button>
+              </div>
+              {(pwGenerated) ? (
+                        <div>
+                            <p className="pw">{pw}</p>
+                        </div>
+                    )
+                    :(
+                        null
+                    )
+                }
               <div className="ErrorMessage">
                 <p>{signUpError}</p>
               </div>
               <div>
-                <button type="submit" >Sign Up</button>
+                <button className="subButton" type="submit" >Sign Up</button>
               </div>
             </form>
         </div>
