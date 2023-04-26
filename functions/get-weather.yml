@@ -7,4 +7,7 @@ functions:
     lang: golang-middleware
     handler: ./get-weather
     image: telmagud/get-weather:latest
+    #annotations:
+    #  topic: cron-function
+    #  schedule: "* * * * *"
 
