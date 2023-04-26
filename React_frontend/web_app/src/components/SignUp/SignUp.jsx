@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { goFunction } from "../../services/FunctionServices";
 import { useNavigate } from 'react-router-dom';
 import { setCurrentUser } from "../../services/userService";
+import { passwordGoFunction, writeUserPythonFunction } from "../../services/FunctionServices";
 import './styles.css';
 
 
@@ -19,11 +19,11 @@ export const SignUp = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // const response = await NodeFunction(formData);
-        const response = await goFunction();
-        console.log(response);
+        const response = await writeUserPythonFunction(formData);
         setCurrentUser(formData.username);
         navigate('/dashboard');
+
+       
     }
     
     const handleInputChange = (event) => {
@@ -35,10 +35,14 @@ export const SignUp = () => {
       navigate("/");
     }
 
-    const randomPw = () => {
+    const randomPw = async (event) => {
+      event.preventDefault();
+
       // Call the appropriate OpenFaaS function
+      const response = await passwordGoFunction();
+      console.log(response);
       setPwGenerated(true);
-      setPw("ThisIsARandomPw");
+      setPw(response);
     }
     
     return(

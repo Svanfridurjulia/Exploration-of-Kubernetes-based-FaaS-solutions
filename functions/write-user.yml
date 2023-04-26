@@ -1,0 +1,16 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://a18983579ab35409298ddbf805c122d5-969766123.eu-west-1.elb.amazonaws.com:80
+functions:
+  write-user:
+    lang: python
+    secrets: 
+      - aws-credentials
+    environment:
+      AWS_ACCESS_KEY_ID: AKIARUHQC53NSDHG3MF5
+      AWS_SECRET_ACCESS_KEY: 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
+      AWS_DEFAULT_REGION: eu-west-1
+    handler: ./write-user
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:write-user
+

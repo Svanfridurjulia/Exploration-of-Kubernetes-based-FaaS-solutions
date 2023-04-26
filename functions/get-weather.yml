@@ -1,10 +1,10 @@
 version: 1.0
 provider:
   name: openfaas
-  gateway: http://127.0.0.1:8080
+  gateway: http://a18983579ab35409298ddbf805c122d5-969766123.eu-west-1.elb.amazonaws.com:80
 functions:
   get-weather:
     lang: golang-middleware
     handler: ./get-weather
-    image: telmagud/get-weather:latest
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:get-weather
 
