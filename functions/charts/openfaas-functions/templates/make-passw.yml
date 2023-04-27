@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: make-passw
+  namespace: openfaas-fn-test
   labels:
     app: make-passw
 spec:
@@ -24,6 +25,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: make-passw
+  namespace: openfaas-fn-test
 spec:
   selector:
     app: make-passw
