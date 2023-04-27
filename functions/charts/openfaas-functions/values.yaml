@@ -1,0 +1,10 @@
+gateway: functions.fabulousasaservice.com
+functions:
+  get-translation:
+    lang: python
+    handler: ./get-translation
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:get-translation
+  make-passw:
+    lang: golang-middleware
+    handler: ./make-passw
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:password

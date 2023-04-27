@@ -1,0 +1,5 @@
+apiVersion: v2
+name: openfaas-functions
+description: A Helm chart for deploying OpenFaaS functions
+version: 0.1.0
+appVersion: "1.0"
