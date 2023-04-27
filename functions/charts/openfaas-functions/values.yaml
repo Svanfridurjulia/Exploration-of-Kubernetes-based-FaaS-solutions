@@ -1,4 +1,4 @@
-gateway: functions.fabulousasaservice.com
+gateway: a3c846d513571471da8da03057441b5b-920512917.eu-west-1.elb.amazonaws.com:8080
 functions:
   get-translation:
     lang: python
