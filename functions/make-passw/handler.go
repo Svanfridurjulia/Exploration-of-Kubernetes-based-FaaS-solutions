@@ -78,5 +78,5 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	password := generatePassword()
 
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(fmt.Sprintf("(changed 14:42) Your password is : %s", password)))
+	w.Write([]byte(fmt.Sprintf("Your password is : %s", password)))
 }

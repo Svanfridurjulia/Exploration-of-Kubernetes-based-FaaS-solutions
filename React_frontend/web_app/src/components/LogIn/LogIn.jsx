@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { NodeFunction } from "../../services/FunctionServices";
+import { authenticationNodeFunction } from "../../services/FunctionServices";
 import { useNavigate } from 'react-router-dom';
 import { setCurrentUser } from "../../services/userService";
 import './styles.css';
@@ -20,7 +20,9 @@ export const LogIn = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const response = await NodeFunction(formData);
+        console.log(formData);
+        const response = await authenticationNodeFunction(formData);
+        console.log(response);
         if (response.statusCode === 200){
             setCurrentUser(formData.username);
             navigate('/dashboard');

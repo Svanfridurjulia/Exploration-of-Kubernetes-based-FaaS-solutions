@@ -1,5 +1,5 @@
 import './style.css';
-import { pythonFunction } from '../../services/FunctionServices';
+import { translationPythonFunction } from '../../services/FunctionServices';
 import { useState } from 'react';
 
 export const PostItem = ({
@@ -14,7 +14,7 @@ export const PostItem = ({
 
     const handleClick = async (event) => {
         event.preventDefault();
-        const response = await pythonFunction({"text": post});
+        const response = await translationPythonFunction({"text": post});
         const obj = JSON.parse(response);
         setTranslatedText(obj.text);
         setTranslated(true);

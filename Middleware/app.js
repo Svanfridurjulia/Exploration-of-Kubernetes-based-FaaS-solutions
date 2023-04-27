@@ -7,14 +7,14 @@ import bodyParser from 'body-parser';
 // const middleware = require('./middleware');
 const app = express();
 
-const URL = 'http://a18983579ab35409298ddbf805c122d5-969766123.eu-west-1.elb.amazonaws.com:8080/function/';
-
+// const URL = 'http://a18983579ab35409298ddbf805c122d5-969766123.eu-west-1.elb.amazonaws.com:80/function/';
+const URL = 'http://functions.fabulousasaservice.com/function/'
 
 app.use(middleware);
 app.use(bodyParser.json());
 
-app.all('/function/nodetest', (req, res) => {
-    fetch(URL + 'nodetest', {
+app.all('/function/authenticate-user', (req, res) => {
+    fetch(URL + 'authenticate-user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -23,7 +23,7 @@ app.all('/function/nodetest', (req, res) => {
       })
         .then(response => {
             if (!response.ok) {
-              console.log(response.text);
+              console.log(response);
             throw new Error('Response not okay');
             }
             return response.text();
@@ -39,9 +39,9 @@ app.all('/function/nodetest', (req, res) => {
       });
 });
 
-app.all('/function/basego', (req, res) => {
+app.all('/function/make-passw', (req, res) => {
   // Call OpenFaaS function 2 and forward the request
-  fetch(URL + 'basego', {
+  fetch(URL + 'make-passw', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -61,8 +61,8 @@ app.all('/function/basego', (req, res) => {
       });
 });
 
-app.all('/function/hello-python', (req, res) => {
-  fetch(URL + 'hello-python', {
+app.all('/function/get-translation', (req, res) => {
+  fetch(URL + 'get-translation', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -83,6 +83,45 @@ app.all('/function/hello-python', (req, res) => {
       console.log(error);
     });
 });
+
+
+app.all('/function/write-user', (req, res) => {
+  fetch(URL + 'write-user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(req.body)
+    })
+      .then(response => {
+          if (!response.ok) {
+            console.log(response);
+          throw new Error('Response not okay');
+          }
+          return response.text();
+      })
+      .then(text => {
+          res.send(JSON.stringify(text));
+      })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+app.all('/function/send-email', (req, res) => {
+  console.log(req.body);
+  fetch(URL + 'send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain'
+      },
+      body: req.body
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
 
 // ...
 

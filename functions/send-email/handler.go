@@ -7,8 +7,9 @@ import (
 )
 
 func SendMail(user string) {
+
 	from := "fabulservice@gmail.com"
-	password := "<passwordgoeshere>"
+	password := "xmgukzkzfhhixizo"
 
 	to := []string{from}
 
@@ -17,7 +18,7 @@ func SendMail(user string) {
 	address := host + ":" + port
 
 	subject := "Subject: New user registered\n"
-	body := "Hello!\nThis email was sent to you to inform you that a new user has registered with Fabulous as a Service.\nThe username is: " + user + "\n\t\n Best regards,\n Fabulous as a Service"
+	body := "Hello!\nThis email was sent to you to inform you that a new user has registered with Fabulous as a Service.\nThe username is: test \n\t\n Best regards,\n Fabulous as a Service"
 	message := []byte(subject + body)
 
 	auth := smtp.PlainAuth("", from, password, host)

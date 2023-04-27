@@ -20,3 +20,7 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+//react start add headers
+//how to add additional headers to js which is serving up the fronted
+//When doing docker build when npm start is run what file is being run?
