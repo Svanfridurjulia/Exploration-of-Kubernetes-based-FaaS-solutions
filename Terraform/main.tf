@@ -246,7 +246,7 @@ module "eks_blueprints_kubernetes_addons" {
       add_on_application = false
     }
      openfaas = {
-      path               = "functions"
+      path               = "functions/charts/openfaas-functions/"
       repo_url           = "https://github.com/Svanfridurjulia/Exploration-of-Kubernetes-based-FaaS-solutions.git"
       add_on_application = false
       project_name       = "openfaas"
