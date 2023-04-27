@@ -1,7 +1,7 @@
 version: 1.0
 provider:
   name: openfaas
-  gateway: http://a18983579ab35409298ddbf805c122d5-969766123.eu-west-1.elb.amazonaws.com:80
+  gateway: a3c846d513571471da8da03057441b5b-920512917.eu-west-1.elb.amazonaws.com:8080
 functions:
   get-translation:
     lang: python
