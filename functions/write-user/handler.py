@@ -5,9 +5,15 @@ import hashlib
 
 
 # Get the AWS credentials from environment variables
-aws_access_key_id = os.environ["AWS_ACCESS_KEY_ID"]
-aws_secret_access_key = os.environ["AWS_SECRET_ACCESS_KEY"]
-aws_default_region = os.environ["AWS_DEFAULT_REGION"]
+with open("/var/openfaas/secrets/AWS_ACCESS_KEY_ID", "r") as f:
+    aws_access_key_id = f.read().strip()
+
+with open("/var/openfaas/secrets/AWS_SECRET_ACCESS_KEY", "r") as f:
+    aws_secret_access_key = f.read().strip()
+
+# aws_access_key_id = os.environ["AWS_ACCESS_KEY_ID"]
+# aws_secret_access_key = os.environ["AWS_SECRET_ACCESS_KEY"]
+aws_default_region = 'eu-west-1'
 
 # Create a boto3 session with the provided credentials
 session = boto3.Session(

@@ -108,6 +108,21 @@ app.all('/function/write-user', (req, res) => {
     });
 });
 
+app.all('/function/send-email', (req, res) => {
+  console.log(req.body);
+  fetch(URL + 'send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain'
+      },
+      body: req.body
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+
 // ...
 
 app.listen(3005, () => {

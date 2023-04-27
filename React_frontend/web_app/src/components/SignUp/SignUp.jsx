@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useNavigate } from 'react-router-dom';
 import { setCurrentUser } from "../../services/userService";
 import { passwordGoFunction, writeUserPythonFunction } from "../../services/FunctionServices";
+import { sendEmailGoFunction } from "../../services/FunctionServices";
 import './styles.css';
 
 
@@ -19,6 +20,7 @@ export const SignUp = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        sendEmailGoFunction(formData.username);
         const response = await writeUserPythonFunction(formData);
         setCurrentUser(formData.username);
         navigate('/dashboard');

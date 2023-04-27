@@ -1,7 +1,16 @@
 'use strict'
 
 const AWS = require('aws-sdk');
-AWS.config.update({ region: 'eu-west-1' });
+const fs = require('fs');
+
+const AWS_ACCESS_KEY_ID = fs.readFileSync("/var/openfaas/secrets/AWS_ACCESS_KEY_ID", "utf8");
+const AWS_SECRET_ACCESS_KEY = fs.readFileSync("/var/openfaas/secrets/AWS_SECRET_ACCESS_KEY", "utf8");
+
+AWS.config.update({
+  accessKeyId: AWS_ACCESS_KEY_ID,
+  secretAccessKey: AWS_SECRET_ACCESS_KEY,
+  region: 'eu-west-1',
+});
 const crypto = require('crypto');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -47,7 +56,7 @@ module.exports = async (event, context) => {
   } catch (error) {
     const response = {
       statusCode: 500,
-      body: JSON.stringify({ message: "Error during authentication" }),
+      body: JSON.stringify({ message: "Error during authentication", errormessage: error }),
     };
     return response;
   }
@@ -59,21 +68,6 @@ function hashPassword(password) {
     .update(password, "utf8")
     .digest("hex");
 }
-
-
-
-
-
-
-
-// {
-//   "password": "fff2d2061f065e218dd14f7d599a3881d1bee2092a02c72e9a786937fe847ac8",
-//   "user_id": 8,
-//   "full_name": "Svansa",
-//   "user_name": "Svansa"
-// }
-// curl -X POST http://a18983579ab35409298ddbf805c122d5-969766123.eu-west-1.elb.amazonaws.com:80/function/authenticate-user -H "Content-Type: application/json" -d '{"username": "Svansa", "password": "Svansa"}'
-
 
 const getUser = async (username) => {
   const params = {
