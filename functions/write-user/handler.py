@@ -5,11 +5,15 @@ import hashlib
 
 
 # Get the AWS credentials from environment variables
-with open("/var/openfaas/secrets/AWS_ACCESS_KEY_ID", "r") as f:
-    aws_access_key_id = f.read().strip()
+# with open("/var/openfaas/secrets/AWS_ACCESS_KEY_ID", "r") as f:
+#     aws_access_key_id = f.read().strip()
 
-with open("/var/openfaas/secrets/AWS_SECRET_ACCESS_KEY", "r") as f:
-    aws_secret_access_key = f.read().strip()
+# with open("/var/openfaas/secrets/AWS_SECRET_ACCESS_KEY", "r") as f:
+#     aws_secret_access_key = f.read().strip()
+
+aws_access_key_id = os.environ["openfaas_secret_aws-credentials_aws_access_key"]
+aws_secret_access_key = os.environ["openfaas_secret_aws-credentials_aws_secret_key"]
+
 
 # aws_access_key_id = os.environ["AWS_ACCESS_KEY_ID"]
 # aws_secret_access_key = os.environ["AWS_SECRET_ACCESS_KEY"]

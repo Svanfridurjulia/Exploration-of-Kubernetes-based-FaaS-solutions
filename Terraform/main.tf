@@ -300,7 +300,48 @@ resource "aws_secretsmanager_secret" "argocd" {
   recovery_window_in_days = 0 # Set to zero for this example to force delete during Terraform destroy
 }
 
-resource "aws_secretsmanager_secret_version" "argocd" {
-  secret_id     = aws_secretsmanager_secret.argocd.id
-  secret_string = random_password.argocd.result
+resource "aws_secretsmanager_secret" "aws_credentials" {
+  name = "aws-credentials"
 }
+
+resource "aws_secretsmanager_secret_version" "aws_credentials" {
+  secret_id     = aws_secretsmanager_secret.aws_credentials.id
+  secret_string = jsonencode({
+    access_key = var.aws_access_key
+    secret_key = var.aws_secret_key
+  })
+}
+
+
+# output "openfaas_ingress_host" {
+#   value = helm_release.openfaas.outputs.ingress[0].host
+# }
+
+
+# resource "aws_secretsmanager_secret_version" "argocd" {
+#   secret_id     = aws_secretsmanager_secret.argocd.id
+#   secret_string = random_password.argocd.result
+# }
+
+# resource "aws_route53_zone" "zone" {
+#   name = "fabulousasaservice.com"
+# }
+
+# resource "aws_route53_record" "openfaas" {
+#   zone_id = data.aws_route53_zone.zone.id
+#   name    = "functions.fabulousasaservice.com"
+#   type    = "CNAME"
+#   ttl     = "300"
+#   records = [aws_route53_record.openfaas.record_fqdn]
+
+#   # Replace the example value with the actual hostname
+#   # of the ingress resource for the OpenFaaS gateway
+#   # obtained from the output of the helm_release resource
+#   set_identifier = "openfaas-ingress"
+#   weight         = 100
+#   alias {
+#     name                   = helm_release.openfaas.outputs.ingress[0].host
+#     zone_id                = data.aws_route53_zone.zone.id
+#     evaluate_target_health = true
+#   }
+# }
