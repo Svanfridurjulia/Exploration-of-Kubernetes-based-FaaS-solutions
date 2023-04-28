@@ -1,15 +1,46 @@
 package function
 
 import (
-	"io"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"net/http"
 	"net/smtp"
 )
 
-func SendMail(user string) {
+func GetSecrets() string {
+	secretName := "email-password"
+	region := "eu-west-1"
+
+	config, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(region))
+	if err != nil {
+		panic(err)
+	}
+
+	// Create Secrets Manager client
+	svc := secretsmanager.NewFromConfig(config)
+
+	input := &secretsmanager.GetSecretValueInput{
+		SecretId:     aws.String(secretName),
+		VersionStage: aws.String("AWSCURRENT"), // VersionStage defaults to AWSCURRENT if unspecified
+	}
+
+	result, err := svc.GetSecretValue(context.TODO(), input)
+	if err != nil {
+		panic(err)
+	}
+
+	// Decrypts secret using the associated KMS key.
+	var secretString string = *result.SecretString
+	return secretString
+
+}
+
+func SendMail(emailPassword string) {
 
 	from := "fabulservice@gmail.com"
-	password := "xmgukzkzfhhixizo"
+	password := emailPassword
 
 	to := []string{from}
 
@@ -30,16 +61,8 @@ func SendMail(user string) {
 }
 
 func Handle(w http.ResponseWriter, r *http.Request) {
-	var input []byte
 
-	if r.Body != nil {
-		defer r.Body.Close()
-
-		body, _ := io.ReadAll(r.Body)
-
-		input = body
-	}
-
-	SendMail(string(input))
+	password := GetSecrets()
+	SendMail(password)
 
 }
