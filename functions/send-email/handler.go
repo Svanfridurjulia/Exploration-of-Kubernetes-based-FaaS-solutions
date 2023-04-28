@@ -5,6 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"log"
 	"net/http"
 	"net/smtp"
 )
@@ -15,7 +16,8 @@ func GetSecrets() string {
 
 	config, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(region))
 	if err != nil {
-		panic(err)
+		log.Println(err)
+		log.Println("Error when loading fault config")
 	}
 
 	// Create Secrets Manager client
@@ -28,7 +30,9 @@ func GetSecrets() string {
 
 	result, err := svc.GetSecretValue(context.TODO(), input)
 	if err != nil {
-		panic(err)
+		log.Println(err)
+		log.Println("Error when getting secret value")
+
 	}
 
 	// Decrypts secret using the associated KMS key.
@@ -39,7 +43,7 @@ func GetSecrets() string {
 
 func SendMail(emailPassword string) {
 
-	from := "fabulservice@gmail.com"
+	from := "fabuloussaservice@gmail.com"
 	password := emailPassword
 
 	to := []string{from}
@@ -56,7 +60,8 @@ func SendMail(emailPassword string) {
 
 	err := smtp.SendMail(address, auth, from, to, message)
 	if err != nil {
-		panic(err)
+		log.Println(err)
+		log.Println("Error when sending mail")
 	}
 }
 
