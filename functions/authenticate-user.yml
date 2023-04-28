@@ -6,7 +6,5 @@ functions:
   authenticate-user:
     lang: node12
     handler: ./authenticate-user
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:authenticate-user
-    secrets:
-      - aws-credentials
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:authenticate-user-v1
 

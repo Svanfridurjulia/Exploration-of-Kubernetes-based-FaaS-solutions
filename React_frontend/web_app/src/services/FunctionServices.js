@@ -81,6 +81,15 @@ export async function writeUserPythonFunction(data) {
   }
 }
 
+// curl -X POST http://a3c846d513571471da8da03057441b5b-920512917.eu-west-1.elb.amazonaws.com:8080/function/write-user \
+//   -H 'Content-Type: application/json' \
+//   -d '{
+//         name: "testing",
+//         username: "testing",
+//         password: "testing"
+//     }'
+
+
 export function sendEmailGoFunction(username) {
   try {
     const resp = fetch(FUNCTIONS_URL + 'send-email', {
