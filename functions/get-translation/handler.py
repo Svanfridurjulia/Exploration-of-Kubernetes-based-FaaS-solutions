@@ -7,4 +7,4 @@ def handle(req):
     response = requests.get('https://api.mymemory.translated.net/', params=params)
     data = json.loads(response.text)
     translated_text = data['responseData']['translatedText']
-    return "bingo"
+    return translated_text

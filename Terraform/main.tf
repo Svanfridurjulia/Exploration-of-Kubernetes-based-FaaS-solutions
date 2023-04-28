@@ -50,6 +50,10 @@ data "aws_eks_cluster_auth" "this" {
     name = module.eks.cluster_name
 }
 
+# data "helm_release" "openfaas" {
+#   name = helm_release.openfaas.metadata[0].name
+# }
+
 
 
 #Imports and configures the VPC module. The VPC module creates a new VPC with the specified name, CIDR block, availability zones, and subnet configurations. 
@@ -203,6 +207,27 @@ depends_on = [
 
 }
 
+# resource "aws_route53_record" "openfaas" {
+#   zone_id = aws_route53_zone.zone.id
+#   name    = "functions.fabulousasaservice.com"
+#   type    = "CNAME"
+#   ttl     = "300"
+#   records = [aws_route53_record.openfaas.record_fqdn]
+
+#   # Replace the example value with the actual hostname
+#   # of the ingress resource for the OpenFaaS gateway
+#   # obtained from the output of the helm_release resource
+#   set_identifier = "openfaas-ingress"
+#   weight         = 100
+#   alias {
+#     name                   = data.helm_release.openfaas.outputs.ingress[0].external_url
+#     zone_id                = aws_route53_zone.zone.id
+#     evaluate_target_health = true
+#   }
+# }
+
+
+
 module "eks_blueprints_kubernetes_addons" {
   source = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons"
 
@@ -300,17 +325,29 @@ resource "aws_secretsmanager_secret" "argocd" {
   recovery_window_in_days = 0 # Set to zero for this example to force delete during Terraform destroy
 }
 
-resource "aws_secretsmanager_secret" "aws_credentials" {
-  name = "aws-credentials"
+# resource "aws_secretsmanager_secret" "aws_credentials" {
+#   name = "aws-credentials"
+# }
+
+# resource "aws_secretsmanager_secret_version" "aws_credentials" {
+#   secret_id     = aws_secretsmanager_secret.aws_credentials.id
+#   secret_string = jsonencode({
+#     access_key = var.aws_access_key
+#     secret_key = var.aws_secret_key
+#   })
+# }
+
+resource "aws_secretsmanager_secret" "email_password" {
+  name = "email-password"
 }
 
-resource "aws_secretsmanager_secret_version" "aws_credentials" {
-  secret_id     = aws_secretsmanager_secret.aws_credentials.id
+resource "aws_secretsmanager_secret_version" "email_password" {
+  secret_id     = aws_secretsmanager_secret.email_password.id
   secret_string = jsonencode({
-    access_key = var.aws_access_key
-    secret_key = var.aws_secret_key
+    password = var.email_password
   })
 }
+
 
 
 # output "openfaas_ingress_host" {
