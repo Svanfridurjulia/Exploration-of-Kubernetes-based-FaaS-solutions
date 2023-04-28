@@ -37,6 +37,7 @@ func GetSecrets() string {
 
 	// Decrypts secret using the associated KMS key.
 	var secretString string = *result.SecretString
+	log.Println(secretString)
 	return secretString
 
 }
