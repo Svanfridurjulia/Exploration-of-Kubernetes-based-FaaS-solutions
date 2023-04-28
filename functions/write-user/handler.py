@@ -35,7 +35,7 @@ def handle(req):
     req_data = json.loads(req)
 
     # Create the DynamoDB resource
-    dynamodb = boto3.resource('dynamodb')
+    dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
 
     # Get the DynamoDB table
     table = dynamodb.Table('users')

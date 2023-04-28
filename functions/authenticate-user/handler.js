@@ -3,14 +3,18 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 
-const AWS_ACCESS_KEY_ID = fs.readFileSync("/var/openfaas/secrets/AWS_ACCESS_KEY_ID", "utf8");
-const AWS_SECRET_ACCESS_KEY = fs.readFileSync("/var/openfaas/secrets/AWS_SECRET_ACCESS_KEY", "utf8");
+// const AWS_ACCESS_KEY_ID = fs.readFileSync("/var/openfaas/secrets/AWS_ACCESS_KEY_ID", "utf8");
+// const AWS_SECRET_ACCESS_KEY = fs.readFileSync("/var/openfaas/secrets/AWS_SECRET_ACCESS_KEY", "utf8");
 
-AWS.config.update({
-  accessKeyId: AWS_ACCESS_KEY_ID,
-  secretAccessKey: AWS_SECRET_ACCESS_KEY,
-  region: 'eu-west-1',
-});
+// AWS.config.update({
+//   accessKeyId: AWS_ACCESS_KEY_ID,
+//   secretAccessKey: AWS_SECRET_ACCESS_KEY,
+//   region: 'eu-west-1',
+// });
+
+AWS.config.region = 'eu-west-1'; // replace with your region
+AWS.config.credentials = new AWS.EC2MetadataCredentials();
+
 const crypto = require('crypto');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
