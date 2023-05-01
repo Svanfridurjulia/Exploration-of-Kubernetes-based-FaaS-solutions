@@ -1,8 +1,8 @@
 
 
 
-// const FUNCTIONS_URL = 'http://localhost:3005/function/';
-const FUNCTIONS_URL = 'http://functions.fabulousasaservice.com/function/';
+const FUNCTIONS_URL = 'http://localhost:3005/function/';
+// const FUNCTIONS_URL = 'http://functions.fabulousasaservice.com/function/';
 
 // const FUNCTIONS_URL = 'http://a18983579ab35409298ddbf805c122d5-969766123.eu-west-1.elb.amazonaws.com:8080/function/';
 
@@ -101,6 +101,23 @@ export function sendEmailGoFunction(username) {
     })
   }
   catch (error) {
+    console.error(error);
+  }
+}
+
+export async function demoPythonFunction(){
+
+  try {
+    const resp = await fetch(FUNCTIONS_URL + 'demo-function', {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+        
+            }});
+    const returnData = await resp.json();
+    return returnData;
+
+  } catch (error) {
     console.error(error);
   }
 }

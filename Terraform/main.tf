@@ -50,9 +50,17 @@ data "aws_eks_cluster_auth" "this" {
     name = module.eks.cluster_name
 }
 
-# data "helm_release" "openfaas" {
-#   name = helm_release.openfaas.metadata[0].name
+
+
+data "aws_route53_zone" "your_domain" {
+  name = "fabulousasaservice.com"
+}
+
+
+# data "aws_elb" "openfaas" {
+#   name = helm_release.openfaas.metadata.0.name
 # }
+
 
 
 
@@ -173,6 +181,40 @@ resource "kubernetes_namespace" "openfaas_fn" {
   }
 }
 
+# resource "null_resource" "openfaas_lb" {
+#   depends_on = [
+#     helm_release.openfaas,
+#     kubernetes_namespace.openfaas,
+#   ]
+
+#   provisioner "local-exec" {
+#     command = <<-EOT
+#       kubectl get svc openfaas-gateway -n openfaas-test -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' > lb_hostname.txt
+#     EOT
+#   }
+# }
+
+resource "null_resource" "openfaas_lb" {
+  depends_on = [
+    helm_release.openfaas,
+    kubernetes_namespace.openfaas,
+  ]
+
+  provisioner "local-exec" {
+    command = <<-EOC
+      kubectl get svc gateway-external -n openfaas-test \
+        --token="${data.aws_eks_cluster_auth.this.token}" \
+        --server="${module.eks.cluster_endpoint}" \
+        --insecure-skip-tls-verify=true \
+        -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' > lb_hostname.txt
+    EOC
+  }
+}
+
+data "local_file" "lb_hostname" {
+  depends_on = [null_resource.openfaas_lb]
+  filename   = "lb_hostname.txt"
+}
 
 
 
@@ -207,25 +249,14 @@ depends_on = [
 
 }
 
-# resource "aws_route53_record" "openfaas" {
-#   zone_id = aws_route53_zone.zone.id
-#   name    = "functions.fabulousasaservice.com"
-#   type    = "CNAME"
-#   ttl     = "300"
-#   records = [aws_route53_record.openfaas.record_fqdn]
 
-#   # Replace the example value with the actual hostname
-#   # of the ingress resource for the OpenFaaS gateway
-#   # obtained from the output of the helm_release resource
-#   set_identifier = "openfaas-ingress"
-#   weight         = 100
-#   alias {
-#     name                   = data.helm_release.openfaas.outputs.ingress[0].external_url
-#     zone_id                = aws_route53_zone.zone.id
-#     evaluate_target_health = true
-#   }
-# }
-
+resource "aws_route53_record" "openfaas_cname" {
+  zone_id = data.aws_route53_zone.your_domain.id
+  name    = "functions.fabulousasaservice.com"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [data.local_file.lb_hostname.content]
+}
 
 
 module "eks_blueprints_kubernetes_addons" {
@@ -246,6 +277,12 @@ module "eks_blueprints_kubernetes_addons" {
       value = random_password.argocd.result
     }
   ]
+  set = [
+      {
+        name  = "controller.repoServer.timeoutSeconds"
+        value = "60" # Set the desired timeout value in seconds
+      }
+    ]
 }
 
 
@@ -311,7 +348,7 @@ resource "random_password" "argocd" {
   length           = 16
   upper            = true
   lower            = true
-  number          = true
+  numeric          = true
   special          = true
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
@@ -319,26 +356,13 @@ resource "random_password" "argocd" {
 
 
 
-#tfsec:ignore:aws-ssm-secret-use-customer-key
 resource "aws_secretsmanager_secret" "argocd" {
   name                    = "argocd"
   recovery_window_in_days = 0 # Set to zero for this example to force delete during Terraform destroy
 }
 
-# resource "aws_secretsmanager_secret" "aws_credentials" {
-#   name = "aws-credentials"
-# }
-
-# resource "aws_secretsmanager_secret_version" "aws_credentials" {
-#   secret_id     = aws_secretsmanager_secret.aws_credentials.id
-#   secret_string = jsonencode({
-#     access_key = var.aws_access_key
-#     secret_key = var.aws_secret_key
-#   })
-# }
-
 resource "aws_secretsmanager_secret" "email_password" {
-  name = "email-password"
+  name = "email-pass"
 }
 
 resource "aws_secretsmanager_secret_version" "email_password" {
@@ -348,37 +372,55 @@ resource "aws_secretsmanager_secret_version" "email_password" {
   })
 }
 
-
-
-# output "openfaas_ingress_host" {
-#   value = helm_release.openfaas.outputs.ingress[0].host
-# }
-
-
-# resource "aws_secretsmanager_secret_version" "argocd" {
-#   secret_id     = aws_secretsmanager_secret.argocd.id
-#   secret_string = random_password.argocd.result
-# }
-
-# resource "aws_route53_zone" "zone" {
-#   name = "fabulousasaservice.com"
-# }
-
-# resource "aws_route53_record" "openfaas" {
-#   zone_id = data.aws_route53_zone.zone.id
-#   name    = "functions.fabulousasaservice.com"
-#   type    = "CNAME"
-#   ttl     = "300"
-#   records = [aws_route53_record.openfaas.record_fqdn]
-
-#   # Replace the example value with the actual hostname
-#   # of the ingress resource for the OpenFaaS gateway
-#   # obtained from the output of the helm_release resource
-#   set_identifier = "openfaas-ingress"
-#   weight         = 100
-#   alias {
-#     name                   = helm_release.openfaas.outputs.ingress[0].host
-#     zone_id                = data.aws_route53_zone.zone.id
-#     evaluate_target_health = true
+# data "kubernetes_service" "openfaas_gateway" {
+#   metadata {
+#     name      = "openfaas-gateway"
+#     namespace = "openfaas-test"
 #   }
 # }
+
+
+# output "load_balancer_hostname" {
+#   value = data.kubernetes_service.openfaas_gateway.status.0.load_balancer.ingress[0].hostname
+# }
+
+
+resource "aws_iam_role_policy_attachment" "worker_node_permissions_attachment" {
+  policy_arn = aws_iam_policy.worker_node_permissions.arn
+  role = replace(module.eks.eks_managed_node_groups["initial"].iam_role_arn, "arn:aws:iam::112172658395:role/", "")
+}
+
+
+resource "aws_iam_policy" "worker_node_permissions" {
+  name        = "worker-node-permissions"
+  description = "Policy for EKS worker nodes to access DynamoDB and Secrets Manager"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "dynamodb:*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
+          "ec2:Describe*",
+          "ec2:AttachVolume",
+          "ec2:DetachVolume",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      }
+    ]
+  })
+}

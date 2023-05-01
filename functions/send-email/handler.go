@@ -16,7 +16,7 @@ type Secret struct {
 }
 
 func GetSecrets() string {
-	secretName := "email-password"
+	secretName := "email-pass"
 	region := "eu-west-1"
 
 	config, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(region))

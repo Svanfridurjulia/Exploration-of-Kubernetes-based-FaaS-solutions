@@ -15,8 +15,14 @@ functions:
   send-email:
     lang: golang-middleware
     handler: ./send-email
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:send-email-v3
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:send-email-v4
   authenticate-user:
     lang: node12
     handler: ./authenticate-user
     image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:authenticate-user-v2
+  demo-function:
+    lang: python
+    handler: ./demo-function
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:demo-function
+ 
+ 
