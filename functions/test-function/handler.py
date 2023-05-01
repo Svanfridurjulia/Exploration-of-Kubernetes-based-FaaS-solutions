@@ -4,4 +4,4 @@ def handle(req):
         req (str): request body
     """
 
-    return "Takk fyrir okkur!"
+    return "Takk fyrir okkur"

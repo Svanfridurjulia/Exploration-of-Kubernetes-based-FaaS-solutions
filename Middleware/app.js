@@ -122,8 +122,8 @@ app.all('/function/send-email', (req, res) => {
     });
 });
 
-app.all('/function/demo-function', (req, res) => {
-  fetch(URL + 'demo-function', {
+app.all('/function/test-function', (req, res) => {
+  fetch(URL + 'test-function', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
