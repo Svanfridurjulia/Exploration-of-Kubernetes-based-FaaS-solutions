@@ -20,10 +20,10 @@ functions:
     lang: node12
     handler: ./authenticate-user
     image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:authenticate-user-v2
-  test-function:
+  python-function:
     lang: python
-    handler: ./test-function
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:test-function
+    handler: ./python-function
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:python-function
 
  
  
