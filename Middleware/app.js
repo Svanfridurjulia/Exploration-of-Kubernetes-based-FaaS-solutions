@@ -122,8 +122,8 @@ app.all('/function/send-email', (req, res) => {
     });
 });
 
-app.all('/function/python-function', (req, res) => {
-  fetch(URL + 'python-function', {
+app.all('/function/test-demo', (req, res) => {
+  fetch(URL + 'test-demo', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
