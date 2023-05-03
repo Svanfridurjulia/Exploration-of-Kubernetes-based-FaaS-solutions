@@ -114,7 +114,7 @@ module "eks" {
   
   eks_managed_node_groups = {
     initial = {
-      instance_types = ["m5.large"]
+      instance_types = ["t3.micro"]
 
       min_size     = 1
       max_size     = 3
@@ -257,6 +257,20 @@ resource "aws_route53_record" "openfaas_cname" {
   ttl     = "300"
   records = [data.local_file.lb_hostname.content]
 }
+
+# resource "aws_route53_record" "my-app" {
+#   zone_id = data.aws_route53_zone.your_domain.id
+#   name    = "web-app.fabulousasaservice.com"
+#   type    = "CNAME"
+
+#   ttl = 300
+
+#   records = [
+#     kubernetes_service.my-app.load_balancer_ingress[0].hostname
+#   ]
+# }
+
+
 
 
 module "eks_blueprints_kubernetes_addons" {
@@ -424,3 +438,62 @@ resource "aws_iam_policy" "worker_node_permissions" {
     ]
   })
 }
+
+# resource "kubernetes_deployment" "my-app" {
+#   metadata {
+#     name = "my-app"
+#   }
+
+#   spec {
+#     replicas = 2
+
+#     selector {
+#       match_labels = {
+#         app = "my-app"
+#       }
+#     }
+
+#     template {
+#       metadata {
+#         labels = {
+#           app = "my-app"
+#         }
+#       }
+
+#       spec {
+#         container {
+#           name  = "my-app"
+#           image = "112172658395.dkr.ecr.eu-west-1.amazonaws.com/react-wep-app:web-app-v19"
+
+#           port {
+#             container_port = 3000
+#           }
+#         }
+#       }
+#     }
+#   }
+# }
+
+# resource "kubernetes_service" "my-app" {
+#   metadata {
+#     name = "my-app"
+#     annotations = {
+#       "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" = "http"
+#     }
+#   }
+
+#   spec {
+#     selector = {
+#       app = "my-app"
+#     }
+
+#     type = "LoadBalancer"
+
+#     port {
+#       protocol    = "TCP"
+#       port        = 80
+#       target_port = 3000
+#     }
+#   }
+# }
+
