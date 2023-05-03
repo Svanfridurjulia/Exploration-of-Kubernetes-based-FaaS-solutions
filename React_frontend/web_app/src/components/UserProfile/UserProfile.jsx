@@ -14,8 +14,6 @@ export const UserProfile = () => {
                 <div className="leftElement"><UserButton option1="Dashboard" link1="/dashboard" option2="Log Out" link2="/"/></div>
                 <div className="centerElement"><h1 className="bannerTopic">My Posts</h1></div>                
             </div>
-            {/* <UserButton option1="Dashboard" link1="/dashboard" option2="Log Out" link2="/"/>
-            <h1>My Posts</h1> */}
             <Posts posts={items}></Posts>
         </div>
     )
