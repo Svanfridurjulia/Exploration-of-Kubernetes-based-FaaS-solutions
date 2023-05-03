@@ -21,4 +21,6 @@ run OpenFaaS function:
     kubectl port-forward -n openfaas svc/gateway 8080:8080
 
 
-
+run Golang tests:
+    navigate to folder with a golang test file
+    go test ./

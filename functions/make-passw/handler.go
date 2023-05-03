@@ -16,6 +16,8 @@ var (
 	digitsSet      = "0123456789"
 )
 
+// getSpecial returns a string
+// The returned string is of length count and contains a random assortment of special characters
 func getSpecial(count int) string {
 	tokens := ""
 	for i := 0; i < count; i++ {
@@ -25,6 +27,8 @@ func getSpecial(count int) string {
 	return tokens
 }
 
+// getDigits returns a string
+// The returned string is of length count and contains a random assortment of digits
 func getDigits(count int) string {
 	tokens := ""
 	for i := 0; i < count; i++ {
@@ -34,6 +38,8 @@ func getDigits(count int) string {
 	return tokens
 }
 
+// getChar returns a string
+// The returned string is of length count and contains a random assortment of lowercase and uppercase characters
 func getChar(count int) string {
 	tokens := ""
 	for i := 0; i < count; i++ {
@@ -49,21 +55,28 @@ func getChar(count int) string {
 	return tokens
 }
 
+// generatePassword returns a string
+// The returned string is of length 16 and is a random password made from special characters, digits and lettere
 func generatePassword() string {
 	rand.Seed(time.Now().UnixNano())
-	PasswordLength := 16
-	RandomDigits := rand.Intn((PasswordLength / 2) - 1)
-	RandomSpecial := rand.Intn((PasswordLength / 2) - 1)
-	special := getSpecial(RandomSpecial)
-	digits := getDigits(RandomDigits)
-	rand.Seed(time.Now().UnixNano())
-	characters := getChar(PasswordLength - RandomDigits - RandomSpecial)
+	passwordLength := 16
+	// The password should not only contain digits and special characters
+	randomDigits := rand.Intn((passwordLength / 2) - 1)
+	randomSpecial := rand.Intn((passwordLength / 2) - 1)
+	// Get the special characters and digits that will go into the password
+	special := getSpecial(randomSpecial)
+	digits := getDigits(randomDigits)
+	// Get the rest of the characters for the password in letters
+	characters := getChar(passwordLength - randomDigits - randomSpecial)
 	password := special + digits + characters
 
+	// Shuffle the string of characters twice to get a more unique password
 	inRune := []rune(password)
 	rand.Shuffle(len(inRune), func(i, j int) {
 		inRune[i], inRune[j] = inRune[j], inRune[i]
 	})
+	// Get a new seed
+	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(inRune), func(i, j int) {
 		inRune[i], inRune[j] = inRune[j], inRune[i]
 	})
@@ -71,6 +84,7 @@ func generatePassword() string {
 	return string(inRune)
 }
 
+// Handle receives a http request and writes back a generated password
 func Handle(w http.ResponseWriter, r *http.Request) {
 
 	defer r.Body.Close()
