@@ -16,6 +16,9 @@ export const Dashboard = () => {
     const handleClickPost = () => {
         const date = new Date();
         let currentDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+        if (post.trim() === "") {
+            return;
+        }
         addPostItem({user: name, time:currentDate, post: post})
         setItems(getAllPostItems);
         setPost('');
@@ -47,7 +50,7 @@ export const Dashboard = () => {
             </div>
             
             <div>
-                <textarea type="text" className="writePost" placeholder="What's on your mind..." onChange={ e => setPost(e.target.value)} value={post}></textarea>
+                <textarea type="text" id="writePost" className="writePost" placeholder="What's on your mind..." onChange={ e => setPost(e.target.value)} value={post}></textarea>
             </div>
             <button onClick={handleClickPost}>Post</button>
             <Posts posts={items}/>
