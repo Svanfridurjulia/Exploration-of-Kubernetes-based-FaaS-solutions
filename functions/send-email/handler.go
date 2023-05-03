@@ -2,6 +2,7 @@ package function
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
@@ -9,6 +10,10 @@ import (
 	"net/http"
 	"net/smtp"
 )
+
+type Secret struct {
+	Password string `json:"password"`
+}
 
 func GetSecrets() string {
 	secretName := "email-password"
@@ -36,8 +41,15 @@ func GetSecrets() string {
 	}
 
 	// Decrypts secret using the associated KMS key.
-	var secretString string = *result.SecretString
-	return secretString
+	var secret Secret
+	err = json.Unmarshal([]byte(*result.SecretString), &secret)
+	if err != nil {
+		log.Println(err)
+		log.Println("Error when unmarshalling")
+	}
+	var password string = secret.Password
+	log.Println(password)
+	return password
 
 }
 
