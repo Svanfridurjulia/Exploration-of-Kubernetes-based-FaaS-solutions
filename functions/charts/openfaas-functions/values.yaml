@@ -1,10 +1,28 @@
-gateway: a3c846d513571471da8da03057441b5b-920512917.eu-west-1.elb.amazonaws.com:8080
+gateway: http://functions.fabulousasaservice.com:8080
 functions:
   get-translation:
     lang: python
     handler: ./get-translation
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:get-translation
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:get-translation-v1
   make-passw:
     lang: golang-middleware
     handler: ./make-passw
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:password
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:make-passw-v1
+  write-user:
+    lang: python
+    handler: ./write-user
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:write-user-v3
+  send-email:
+    lang: golang-middleware
+    handler: ./send-email
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:send-email-v4
+  authenticate-user:
+    lang: node12
+    handler: ./authenticate-user
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:authenticate-user-v2
+  demo-function:
+    lang: python
+    handler: ./demo-function
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:demo-function
+ 
+ 

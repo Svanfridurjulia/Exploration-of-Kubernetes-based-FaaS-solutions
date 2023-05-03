@@ -8,7 +8,7 @@ import bodyParser from 'body-parser';
 const app = express();
 
 // const URL = 'http://a18983579ab35409298ddbf805c122d5-969766123.eu-west-1.elb.amazonaws.com:80/function/';
-const URL = 'http://functions.fabulousasaservice.com/function/'
+const URL = 'http://functions.fabulousasaservice.com:8080/function/'
 
 app.use(middleware);
 app.use(bodyParser.json());
@@ -122,9 +122,32 @@ app.all('/function/send-email', (req, res) => {
     });
 });
 
+app.all('/function/demo-function', (req, res) => {
+  fetch(URL + 'demo-function', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+          if (!response.ok) {
+            console.log(response);
+          throw new Error('Response not okay');
+          }
+          return response.text();
+      })
+      .then(text => {
+          res.send(JSON.stringify(text));
+      })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
 
 // ...
 
 app.listen(3005, () => {
   console.log('Gateway server listening on port 3005!');
+
 });

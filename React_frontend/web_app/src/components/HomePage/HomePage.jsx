@@ -15,7 +15,7 @@ export const HomePage = () => {
 
     return (
         <div className="homePage">
-            <h1 className="pageName">Welcome to FaaS-App!</h1>
+            <h1 className="pageName">Welcome to Fabulous as a Service!</h1>
             <button className="buttonLook" onClick={goToLogIn}>
                 Log In
             </button>

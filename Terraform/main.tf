@@ -52,6 +52,18 @@ data "aws_eks_cluster_auth" "this" {
 
 
 
+data "aws_route53_zone" "your_domain" {
+  name = "fabulousasaservice.com"
+}
+
+
+# data "aws_elb" "openfaas" {
+#   name = helm_release.openfaas.metadata.0.name
+# }
+
+
+
+
 #Imports and configures the VPC module. The VPC module creates a new VPC with the specified name, CIDR block, availability zones, and subnet configurations. 
 #It also creates NAT gateways and applies the necessary tags to the public and private subnets.
 
@@ -169,6 +181,40 @@ resource "kubernetes_namespace" "openfaas_fn" {
   }
 }
 
+# resource "null_resource" "openfaas_lb" {
+#   depends_on = [
+#     helm_release.openfaas,
+#     kubernetes_namespace.openfaas,
+#   ]
+
+#   provisioner "local-exec" {
+#     command = <<-EOT
+#       kubectl get svc openfaas-gateway -n openfaas-test -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' > lb_hostname.txt
+#     EOT
+#   }
+# }
+
+resource "null_resource" "openfaas_lb" {
+  depends_on = [
+    helm_release.openfaas,
+    kubernetes_namespace.openfaas,
+  ]
+
+  provisioner "local-exec" {
+    command = <<-EOC
+      kubectl get svc gateway-external -n openfaas-test \
+        --token="${data.aws_eks_cluster_auth.this.token}" \
+        --server="${module.eks.cluster_endpoint}" \
+        --insecure-skip-tls-verify=true \
+        -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' > lb_hostname.txt
+    EOC
+  }
+}
+
+data "local_file" "lb_hostname" {
+  depends_on = [null_resource.openfaas_lb]
+  filename   = "lb_hostname.txt"
+}
 
 
 
@@ -203,6 +249,16 @@ depends_on = [
 
 }
 
+
+resource "aws_route53_record" "openfaas_cname" {
+  zone_id = data.aws_route53_zone.your_domain.id
+  name    = "functions.fabulousasaservice.com"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [data.local_file.lb_hostname.content]
+}
+
+
 module "eks_blueprints_kubernetes_addons" {
   source = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons"
 
@@ -221,6 +277,12 @@ module "eks_blueprints_kubernetes_addons" {
       value = random_password.argocd.result
     }
   ]
+  set = [
+      {
+        name  = "controller.repoServer.timeoutSeconds"
+        value = "60" # Set the desired timeout value in seconds
+      }
+    ]
 }
 
 
@@ -286,7 +348,7 @@ resource "random_password" "argocd" {
   length           = 16
   upper            = true
   lower            = true
-  number          = true
+  numeric          = true
   special          = true
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
@@ -294,13 +356,71 @@ resource "random_password" "argocd" {
 
 
 
-#tfsec:ignore:aws-ssm-secret-use-customer-key
 resource "aws_secretsmanager_secret" "argocd" {
   name                    = "argocd"
   recovery_window_in_days = 0 # Set to zero for this example to force delete during Terraform destroy
 }
 
-resource "aws_secretsmanager_secret_version" "argocd" {
-  secret_id     = aws_secretsmanager_secret.argocd.id
-  secret_string = random_password.argocd.result
+resource "aws_secretsmanager_secret" "email_password" {
+  name = "email-pass"
+}
+
+resource "aws_secretsmanager_secret_version" "email_password" {
+  secret_id     = aws_secretsmanager_secret.email_password.id
+  secret_string = jsonencode({
+    password = var.email_password
+  })
+}
+
+# data "kubernetes_service" "openfaas_gateway" {
+#   metadata {
+#     name      = "openfaas-gateway"
+#     namespace = "openfaas-test"
+#   }
+# }
+
+
+# output "load_balancer_hostname" {
+#   value = data.kubernetes_service.openfaas_gateway.status.0.load_balancer.ingress[0].hostname
+# }
+
+
+resource "aws_iam_role_policy_attachment" "worker_node_permissions_attachment" {
+  policy_arn = aws_iam_policy.worker_node_permissions.arn
+  role = replace(module.eks.eks_managed_node_groups["initial"].iam_role_arn, "arn:aws:iam::112172658395:role/", "")
+}
+
+
+resource "aws_iam_policy" "worker_node_permissions" {
+  name        = "worker-node-permissions"
+  description = "Policy for EKS worker nodes to access DynamoDB and Secrets Manager"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "dynamodb:*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
+          "ec2:Describe*",
+          "ec2:AttachVolume",
+          "ec2:DetachVolume",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      }
+    ]
+  })
 }
