@@ -1,9 +1,7 @@
 .postContainer {
     display: flex;
     padding-top: 30px;
-    justify-content: center;
-    /* width: 800px; */
-    
+    justify-content: center;    
 }
 
 .post {
@@ -15,7 +13,6 @@
 
 .info  {
     font-size: small;
-    /* padding-left: 0px; */
     margin: 5px;
     text-align: right;
 }
@@ -26,6 +23,7 @@
     margin-left: 5px;
     margin-right: 20px;
 }
+
 .translation {
     font-style: italic;
 }

@@ -16,11 +16,13 @@ export const Dashboard = () => {
     const handleClickPost = () => {
         const date = new Date();
         let currentDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+        if (post.trim() === "") {
+            return;
+        }
         addPostItem({user: name, time:currentDate, post: post})
         setItems(getAllPostItems);
         setPost('');
     }
-
 
     const handleClickDemo = async (event) => {
         event.preventDefault();
@@ -30,26 +32,24 @@ export const Dashboard = () => {
 
     const closePopup = () => {
         setPopUpText('');
-      };
+    };
     
     return (
         <div>
             <div className="banner">
-                <div className="leftElement"><UserButton option1="My Posts" link1="/posts" option2="Log Out" link2="/"/></div>
-                <div className="centerElement"><h1 className="bannerTopic">Dashboard</h1>
+                <div className="leftElement">
+                    <UserButton option1="My Posts" link1="/posts" option2="Log Out" link2="/"/>
+                </div>
+                <div className="centerElement"><h1 data-testid="banner" className="bannerTopic">Dashboard</h1>
                     <PopupBanner text={popUpText} onClose={closePopup}></PopupBanner>
-                    <button onClick={handleClickDemo}>Demo</button>
-                
-                </div>   
-                <div className="rightElement">
-                </div>             
-                
+                    <button data-testid="demoButton" onClick={handleClickDemo}>Demo</button>
+                </div>            
             </div>
             
             <div>
-                <textarea type="text" className="writePost" placeholder="What's on your mind..." onChange={ e => setPost(e.target.value)} value={post}></textarea>
+                <textarea type="text" id="writePost" className="writePost" placeholder="What's on your mind..." onChange={ e => setPost(e.target.value)} value={post}></textarea>
             </div>
-            <button onClick={handleClickPost}>Post</button>
+            <button data-testid="postButton" onClick={handleClickPost}>Post</button>
             <Posts posts={items}/>
         </div>
     )
