@@ -32,12 +32,16 @@ jobs:
         id: build-and-push
         run: |
           for directory in $(ls -d functions/*/) ; do
-          if [[ ! $directory =~ "charts" ]]; then
+          fn_name=${directory%/}
+          fn_name=${fn_name##*/}
+          echo "fn_name: $fn_name"
+          if [[ ! "$fn_name" =~ "charts" ]]; then
+            echo "Checking directory: $directory"
             cd $directory
-            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${directory##*/}_v1
+            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${fn_name}_v1
             docker build -t $IMAGE_NAME .
             docker push $IMAGE_NAME
-            cd ..
+            cd ../..
           fi
           done
 
