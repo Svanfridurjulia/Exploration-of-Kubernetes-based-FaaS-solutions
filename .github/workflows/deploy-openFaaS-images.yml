@@ -1,0 +1,49 @@
+name: Deploy to ECR
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: eu-west-1
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push Docker images
+        id: build-and-push
+        run: |
+          for directory in $(ls -d */); do
+            cd $directory
+            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${directory%?}-v1
+            docker build -t $IMAGE_NAME .
+            docker push $IMAGE_NAME
+            cd ..
+          done
+
+      - name: Output Docker image URLs
+        run: |
+          for directory in $(ls -d */); do
+            IMAGE_NAME=$ECR_REGISTRY/${GITHUB_REPOSITORY}_${directory%?}
+            IMAGE_TAG=$(docker inspect --format='{{.Id}}' $IMAGE_NAME)
+            echo "::set-output name=${directory%?}_image_url::${IMAGE_NAME}:${IMAGE_TAG}"
+          done
+
