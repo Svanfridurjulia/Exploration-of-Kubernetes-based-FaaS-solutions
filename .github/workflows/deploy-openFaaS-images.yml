@@ -38,7 +38,7 @@ jobs:
           if [[ ! "$fn_name" =~ "charts" ]]; then
             echo "Checking directory: $directory"
             cd $directory
-            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${fn_name}_v1
+            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${fn_name}-v1
             docker build -t $IMAGE_NAME .
             docker push $IMAGE_NAME
             cd ../..
