@@ -75,7 +75,7 @@ export const SignUp = () => {
                             null
                         )
                     }
-                    <div className="ErrorMessage">
+                    <div className="errorMessage">
                         <p>{signUpError}</p>
                     </div>
                     <div>

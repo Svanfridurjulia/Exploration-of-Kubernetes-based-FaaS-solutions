@@ -1,4 +1,4 @@
-.ErrorMessage{
+.errorMessage{
     color: red;
     margin-left: 5%;
 }
@@ -25,7 +25,6 @@ h1 {
 button {
     display: inline-block;
     font-family: Garamond, serif;
-    /* outline: none; */
     cursor: pointer;
     font-size: 25px;
     line-height: 20px;
@@ -34,8 +33,6 @@ button {
     padding: 14px 24px;
     border: none;
     background-color: rgb(215, 4, 102);
-    /* transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s; */
-    /* background: linear-gradient(to right, rgb(230, 30, 77) 0%, rgb(227, 28, 95) 50%, rgb(215, 4, 102) 100%); */
     color: #fff;
     margin-top: 30px;
 }
