@@ -10,6 +10,7 @@ provider "kubernetes" {
   host                   = module.eks.cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
   token                  = data.aws_eks_cluster_auth.this.token
+
 }
 
 provider "helm" {
@@ -106,19 +107,14 @@ module "eks" {
 
   cluster_endpoint_public_access = true
   cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
-
-    #    vpc_config = {
-    #     endpoint_public_access = true
-    #     public_access_cidrs    = ["0.0.0.0/0"]
-    #   }
   
   eks_managed_node_groups = {
     initial = {
-      instance_types = ["t3.micro"]
+      instance_types = ["t3.small"]
 
-      min_size     = 1
-      max_size     = 3
-      desired_size = 2
+      min_size     = 0
+      max_size     = 7
+      desired_size = 3
 
     }
   }
@@ -181,18 +177,6 @@ resource "kubernetes_namespace" "openfaas_fn" {
   }
 }
 
-# resource "null_resource" "openfaas_lb" {
-#   depends_on = [
-#     helm_release.openfaas,
-#     kubernetes_namespace.openfaas,
-#   ]
-
-#   provisioner "local-exec" {
-#     command = <<-EOT
-#       kubectl get svc openfaas-gateway -n openfaas-test -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' > lb_hostname.txt
-#     EOT
-#   }
-# }
 
 resource "null_resource" "openfaas_lb" {
   depends_on = [
@@ -258,20 +242,6 @@ resource "aws_route53_record" "openfaas_cname" {
   records = [data.local_file.lb_hostname.content]
 }
 
-# resource "aws_route53_record" "my-app" {
-#   zone_id = data.aws_route53_zone.your_domain.id
-#   name    = "web-app.fabulousasaservice.com"
-#   type    = "CNAME"
-
-#   ttl = 300
-
-#   records = [
-#     kubernetes_service.my-app.load_balancer_ingress[0].hostname
-#   ]
-# }
-
-
-
 
 module "eks_blueprints_kubernetes_addons" {
   source = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons"
@@ -283,7 +253,7 @@ module "eks_blueprints_kubernetes_addons" {
   eks_cluster_version  = module.eks.cluster_version
 
   enable_argocd = true
-  # This example shows how to set default ArgoCD Admin Password using SecretsManager with Helm Chart set_sensitive values.
+
   argocd_helm_config = {
   set_sensitive = [
     {
@@ -324,6 +294,7 @@ module "eks_blueprints_kubernetes_addons" {
      openfaas = {
       path               = "functions/charts/openfaas-functions/"
       repo_url           = "https://github.com/Svanfridurjulia/Exploration-of-Kubernetes-based-FaaS-solutions.git"
+      target_revision    = "Svanfríður"
       add_on_application = false
       project_name       = "openfaas"
       namespace          = "openfaas-fn-test"
@@ -336,19 +307,19 @@ module "eks_blueprints_kubernetes_addons" {
   }
 
   # Add-ons
-  enable_amazon_eks_aws_ebs_csi_driver = true
-  enable_aws_for_fluentbit             = true
+  enable_amazon_eks_aws_ebs_csi_driver = false
+  enable_aws_for_fluentbit             = false
   # Let fluentbit create the cw log group
   aws_for_fluentbit_create_cw_log_group = false
-  enable_cert_manager                   = true
-  enable_cluster_autoscaler             = true
-  enable_karpenter                      = true
-  enable_keda                           = true
-  enable_metrics_server                 = true
+  enable_cert_manager                   = false
+  enable_cluster_autoscaler             = false
+  enable_karpenter                      = false
+  enable_keda                           = false
+  enable_metrics_server                 = false
   enable_prometheus                     = true
-  enable_traefik                        = true
-  enable_vpa                            = true
-  enable_yunikorn                       = true
+  enable_traefik                        = false
+  enable_vpa                            = false
+  enable_yunikorn                       = false
   enable_argo_rollouts                  = true
 
   tags = local.tags
@@ -385,18 +356,6 @@ resource "aws_secretsmanager_secret_version" "email_password" {
     password = var.email_password
   })
 }
-
-# data "kubernetes_service" "openfaas_gateway" {
-#   metadata {
-#     name      = "openfaas-gateway"
-#     namespace = "openfaas-test"
-#   }
-# }
-
-
-# output "load_balancer_hostname" {
-#   value = data.kubernetes_service.openfaas_gateway.status.0.load_balancer.ingress[0].hostname
-# }
 
 
 resource "aws_iam_role_policy_attachment" "worker_node_permissions_attachment" {
@@ -439,61 +398,124 @@ resource "aws_iam_policy" "worker_node_permissions" {
   })
 }
 
-# resource "kubernetes_deployment" "my-app" {
-#   metadata {
-#     name = "my-app"
-#   }
+resource "kubernetes_deployment" "my-app" {
+  metadata {
+    name = "my-app"
+  }
 
-#   spec {
-#     replicas = 2
+  spec {
+    replicas = 1
 
-#     selector {
-#       match_labels = {
-#         app = "my-app"
-#       }
-#     }
+    selector {
+      match_labels = {
+        app = "my-app"
+      }
+    }
 
-#     template {
-#       metadata {
-#         labels = {
-#           app = "my-app"
-#         }
-#       }
+    template {
+      metadata {
+        labels = {
+          app = "my-app"
+        }
+      }
 
-#       spec {
-#         container {
-#           name  = "my-app"
-#           image = "112172658395.dkr.ecr.eu-west-1.amazonaws.com/react-wep-app:web-app-v19"
+      spec {
+        container {
+          name  = "my-app"
+          image = "112172658395.dkr.ecr.eu-west-1.amazonaws.com/react-wep-app:web-app-v19"
 
-#           port {
-#             container_port = 3000
-#           }
-#         }
-#       }
-#     }
-#   }
-# }
+          port {
+            container_port = 3000
+          }
+        }
+      }
+    }
+  }
+}
 
-# resource "kubernetes_service" "my-app" {
-#   metadata {
-#     name = "my-app"
-#     annotations = {
-#       "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" = "http"
-#     }
-#   }
+resource "aws_ecr_repository" "faas_function_repository" {
+  name = "faas-function-repository"
+}
 
-#   spec {
-#     selector = {
-#       app = "my-app"
-#     }
+resource "aws_ecr_repository" "react_web_app" {
+  name = "react-web-app"
+}
 
-#     type = "LoadBalancer"
 
-#     port {
-#       protocol    = "TCP"
-#       port        = 80
-#       target_port = 3000
-#     }
-#   }
-# }
+resource "kubernetes_service" "my-app" {
+  metadata {
+    name = "my-app"
+    annotations = {
+      "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" = "http"
+    }
+  }
+
+  spec {
+    selector = {
+      app = "my-app"
+    }
+
+    type = "LoadBalancer"
+
+    port {
+      protocol    = "TCP"
+      port        = 80
+      target_port = 3000
+    }
+  }
+}
+
+resource "kubernetes_namespace" "grafana" {
+  metadata {
+    name = "grafana"
+  }
+}
+
+
+resource "aws_route53_record" "grafana_cname" {
+  zone_id = data.aws_route53_zone.your_domain.id
+  name    = "grafana.fabulousasaservice.com"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [data.local_file.lb_hostname.content]
+}
+
+
+resource "helm_release" "grafana" {
+  name       = "grafana"
+  namespace  = "grafana"
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "grafana"
+
+  values = [
+    <<-EOT
+    service:
+      type: ClusterIP
+    EOT
+  ]
+}
+
+resource "kubernetes_ingress" "grafana" {
+  metadata {
+    name      = "grafana-ingress"
+    namespace = "grafana"
+  }
+
+  spec {
+    rule {
+      host = "grafana.fabulousasaservice.com"
+
+      http {
+        path {
+          backend {
+            service_name = helm_release.grafana.metadata[0].name
+            service_port = 80
+          }
+          path = "/"
+        }
+      }
+    }
+  }
+}
+
 
