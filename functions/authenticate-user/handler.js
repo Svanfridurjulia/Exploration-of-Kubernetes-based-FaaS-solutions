@@ -3,30 +3,13 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 
-// const AWS_ACCESS_KEY_ID = fs.readFileSync("/var/openfaas/secrets/AWS_ACCESS_KEY_ID", "utf8");
-// const AWS_SECRET_ACCESS_KEY = fs.readFileSync("/var/openfaas/secrets/AWS_SECRET_ACCESS_KEY", "utf8");
-
-// AWS.config.update({
-//   accessKeyId: AWS_ACCESS_KEY_ID,
-//   secretAccessKey: AWS_SECRET_ACCESS_KEY,
-//   region: 'eu-west-1',
-// });
-
-AWS.config.region = 'eu-west-1'; // replace with your region
+AWS.config.region = 'eu-west-1';
 AWS.config.credentials = new AWS.EC2MetadataCredentials();
 
 const crypto = require('crypto');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports = async (event, context) => {
-  
-    // const jsonString = event;
-    // const { username, password } = JSON.parse(jsonString);
-    // console.log(username, password);
-    // console.log(event);
-    // const jsonObj = JSON.parse(event.body);
-    // const username = jsonObj.username;
-    // const password = jsonObj.password;
     console.log(event.body);
     const username = event.body.username;
     const password = event.body.password;
