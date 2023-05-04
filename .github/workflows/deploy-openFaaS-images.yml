@@ -31,7 +31,7 @@ jobs:
       - name: Build and push Docker images
         id: build-and-push
         run: |
-          for directory in $(ls -d functions/*/); do
+          for directory in $(ls -d functions/*/) | grep -v charts/; do
             cd $directory
             IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${directory##*/}_v1
             docker build -t $IMAGE_NAME .
