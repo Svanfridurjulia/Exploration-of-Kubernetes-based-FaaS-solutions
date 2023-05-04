@@ -33,7 +33,7 @@ jobs:
         run: |
           for directory in $(ls -d functions/*/); do
             cd $directory
-            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${directory%?}-v1
+            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${directory#*/}_v1
             docker build -t $IMAGE_NAME .
             docker push $IMAGE_NAME
             cd ..
