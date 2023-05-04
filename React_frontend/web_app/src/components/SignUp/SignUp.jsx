@@ -24,8 +24,6 @@ export const SignUp = () => {
         const response = await writeUserPythonFunction(formData);
         setCurrentUser(formData.username);
         navigate('/dashboard');
-
-       
     }
     
     const handleInputChange = (event) => {
@@ -34,17 +32,16 @@ export const SignUp = () => {
     }
 
     const goBack = () => {
-      navigate("/");
+        navigate("/");
     }
 
     const randomPw = async (event) => {
-      event.preventDefault();
-
-      // Call the appropriate OpenFaaS function
-      const response = await passwordGoFunction();
-      console.log(response);
-      setPwGenerated(true);
-      setPw(response);
+        event.preventDefault();
+        // Call the appropriate OpenFaaS function
+        const response = await passwordGoFunction();
+        console.log(response);
+        setPwGenerated(true);
+        setPw(response);
     }
     
     return(
@@ -87,7 +84,6 @@ export const SignUp = () => {
               </div>
             </form>
         </div>
-      </div>
-        
+      </div> 
     )
 }
