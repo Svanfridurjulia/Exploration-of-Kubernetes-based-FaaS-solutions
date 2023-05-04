@@ -3,7 +3,7 @@ name: Deploy to ECR
 on:
   push:
     branches:
-      - main
+      - Svanfríður
 
 env:
   AWS_REGION: eu-west-1
@@ -31,19 +31,17 @@ jobs:
       - name: Build and push Docker images
         id: build-and-push
         run: |
-          for directory in $(ls -d */); do
+          for directory in $(ls -d functions/*/); do
             cd $directory
-            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${directory%?}-v1
+            IMAGE_NAME=$ECR_REGISTRY/${GITHUB_REPOSITORY}_${directory#functions/}
             docker build -t $IMAGE_NAME .
             docker push $IMAGE_NAME
-            cd ..
+            cd ../../
           done
 
       - name: Output Docker image URLs
         run: |
-          for directory in $(ls -d */); do
-            IMAGE_NAME=$ECR_REGISTRY/${GITHUB_REPOSITORY}_${directory%?}
-            IMAGE_TAG=$(docker inspect --format='{{.Id}}' $IMAGE_NAME)
-            echo "::set-output name=${directory%?}_image_url::${IMAGE_NAME}:${IMAGE_TAG}"
+          for directory in $(ls -d functions/*/); do
+            echo "::set-output name=${directory#functions/}_image_url::$ECR_REGISTRY/${GITHUB_REPOSITORY}_${directory#functions/}:latest"
           done
 
