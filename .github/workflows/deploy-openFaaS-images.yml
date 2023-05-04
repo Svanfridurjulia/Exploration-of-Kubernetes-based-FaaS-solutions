@@ -33,15 +33,15 @@ jobs:
         run: |
           for directory in $(ls -d functions/*/); do
             cd $directory
-            IMAGE_NAME=$ECR_REGISTRY/${GITHUB_REPOSITORY}_${directory#functions/}
+            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${directory%?}-v1
             docker build -t $IMAGE_NAME .
             docker push $IMAGE_NAME
-            cd ../../
+            cd ..
           done
 
       - name: Output Docker image URLs
         run: |
           for directory in $(ls -d functions/*/); do
+          IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${directory%?}-v1
             echo "::set-output name=${directory#functions/}_image_url::$ECR_REGISTRY/${GITHUB_REPOSITORY}_${directory#functions/}:latest"
           done
-
