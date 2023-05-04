@@ -24,7 +24,6 @@ export const Dashboard = () => {
         setPost('');
     }
 
-
     const handleClickDemo = async (event) => {
         event.preventDefault();
         const response = await demoPythonFunction();
@@ -33,26 +32,24 @@ export const Dashboard = () => {
 
     const closePopup = () => {
         setPopUpText('');
-      };
+    };
     
     return (
         <div>
             <div className="banner">
-                <div className="leftElement"><UserButton option1="My Posts" link1="/posts" option2="Log Out" link2="/"/></div>
-                <div className="centerElement"><h1 className="bannerTopic">Dashboard</h1>
+                <div className="leftElement">
+                    <UserButton option1="My Posts" link1="/posts" option2="Log Out" link2="/"/>
+                </div>
+                <div className="centerElement"><h1 data-testid="banner" className="bannerTopic">Dashboard</h1>
                     <PopupBanner text={popUpText} onClose={closePopup}></PopupBanner>
-                    <button onClick={handleClickDemo}>Demo</button>
-                
-                </div>   
-                <div className="rightElement">
-                </div>             
-                
+                    <button data-testid="demoButton" onClick={handleClickDemo}>Demo</button>
+                </div>            
             </div>
             
             <div>
                 <textarea type="text" id="writePost" className="writePost" placeholder="What's on your mind..." onChange={ e => setPost(e.target.value)} value={post}></textarea>
             </div>
-            <button onClick={handleClickPost}>Post</button>
+            <button data-testid="postButton" onClick={handleClickPost}>Post</button>
             <Posts posts={items}/>
         </div>
     )

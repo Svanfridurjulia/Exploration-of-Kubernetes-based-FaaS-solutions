@@ -7,7 +7,6 @@
     resize: none; 
 }
 
-
 .banner {
     width: 100%;
     display: flex;
@@ -27,20 +26,4 @@
     margin-right: 140px;
     width: 200px;
     margin-left: 100px;
-}
-
-/* .dashboard {
-    width: 400px;
-    justify-content: center;
-    justify-content: center;
-    align-self: center;
-    text-align: center;
-} */
-
-.rightElement {
-    position: absolute;
-    top: 5px;
-    right: 20px;
-    width: 300px;
-    visibility: hidden;
 }

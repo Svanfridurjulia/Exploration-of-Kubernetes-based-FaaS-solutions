@@ -9,19 +9,6 @@ import { SignUp } from './components/SignUp/SignUp';
 import { PostContext } from './context/PostContext';
 import { UserProfile } from './components/UserProfile/UserProfile';
 
-// <RoomContext.Provider value={{rooms}}>
-
-// <div className="App">
-//   <BrowserRouter>
-// 	<Routes>
-// 	  <Route exact path='/' element={ <StartingPage/> }/>
-// 	  <Route exact path='/chat' element={<ChatApp/>}/>
-// 	</Routes>
-//   </BrowserRouter>
-// </div>
-// </RoomContext.Provider>
-
-
 function App() {
 	const posts = [];
 
