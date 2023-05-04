@@ -1,14 +1,8 @@
-import './style.css';
+import './styles.css';
 import { translationPythonFunction } from '../../services/FunctionServices';
 import { useState } from 'react';
 
-export const PostItem = ({
-    id,
-    user,
-    time,
-    post
-}) => {
-
+export const PostItem = ({id, user, time, post}) => {
     const [translated, setTranslated] = useState(false);
     const [translatedText, setTranslatedText] = useState(post);
 
@@ -23,11 +17,11 @@ export const PostItem = ({
     return (
         <div className='postContainer'>
             <div className='post'>
-                <p className='info'>{user} on {time}</p>
-                <p className='postMessage'>{post}</p>
+                <p data-testid="postedBy" className='info'>{user} on {time}</p>
+                <p data-testid="postMessage" className='postMessage'>{post}</p>
                     {(translated) ? (
                         <div>
-                            <p className='translation'>Spanish translation: {translatedText}</p>
+                            <p data-testid="translation" className='translation'>Spanish translation: {translatedText}</p>
                         </div>
                     )
                     :(
@@ -35,8 +29,7 @@ export const PostItem = ({
                     )
                 }
             </div>
-            <button className='translateButton' onClick={handleClick}>Translate</button>
+            <button data-testid="translateButton" className='translateButton' onClick={handleClick}>Translate</button>
         </div>
     )
-
 }
