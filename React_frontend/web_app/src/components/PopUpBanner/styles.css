@@ -1,4 +1,4 @@
-.popup-banner {
+.popupBanner {
     background-color: #f2dede;
     color: #a94442;
     padding: 10px;
@@ -8,7 +8,7 @@
     left: 20px;
   }
   
-  .popup-banner button {
+.popupBanner button {
     background-color: #a94442;
     color: #fff;
     border: none;
@@ -16,5 +16,5 @@
     margin-left: 10px;
     cursor: pointer;
     border-radius: 3px;
-  }
+}
   
