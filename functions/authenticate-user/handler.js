@@ -3,93 +3,99 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 
-// const AWS_ACCESS_KEY_ID = fs.readFileSync("/var/openfaas/secrets/AWS_ACCESS_KEY_ID", "utf8");
-// const AWS_SECRET_ACCESS_KEY = fs.readFileSync("/var/openfaas/secrets/AWS_SECRET_ACCESS_KEY", "utf8");
-
-// AWS.config.update({
-//   accessKeyId: AWS_ACCESS_KEY_ID,
-//   secretAccessKey: AWS_SECRET_ACCESS_KEY,
-//   region: 'eu-west-1',
-// });
-
-AWS.config.region = 'eu-west-1'; // replace with your region
+// Configure AWS SDK
+AWS.config.region = 'eu-west-1';
 AWS.config.credentials = new AWS.EC2MetadataCredentials();
 
 const crypto = require('crypto');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
+// Export an asynchronous function that handles authentication requests
+// Returns a response object with a status code and message.
 module.exports = async (event, context) => {
-  
-    // const jsonString = event;
-    // const { username, password } = JSON.parse(jsonString);
-    // console.log(username, password);
-    // console.log(event);
-    // const jsonObj = JSON.parse(event.body);
-    // const username = jsonObj.username;
-    // const password = jsonObj.password;
     console.log(event.body);
+
+    // Get the username and password from the request body
     const username = event.body.username;
     const password = event.body.password;
 
-  try {
-    const user = await getUser(username);
-    if (!user) {
-      const response = {
-        statusCode: 400,
-        body: JSON.stringify({ message: "invalid username and/or password" }),
-      };
-      return response;
+    try {
+      // Try to get the user object from the DynamoDB database
+        const user = await getUser(username);
+        if (!user) {
+          // If user object is not found, return 400 Bad Request response
+            const response = {
+                statusCode: 400,
+                body: JSON.stringify({ message: "invalid username and/or password" }),
+            };
+            return response;
+        }
+
+        // Hash the received passwrod
+        const hashedPassword = hashPassword(password);
+
+        // Compare the hashed password and the stored user password
+        if (hashedPassword === user.password) {
+            // If the passwords match, return 200 OK response
+            const response = {
+                statusCode: 200,
+                body: JSON.stringify({ message: "authenticated" }),
+            };
+            return response;
+        }
+        
+        // If the hashed password does not match the stored password, return 401 Unauthorized response
+        const response = {
+            statusCode: 401,
+            body: JSON.stringify({ message: "not authenticated" }),
+        };
+        return response;
+
+    // If there are any errors, return a 500 Internal Server Error response with the error message
+    } catch (error) {
+        const response = {
+            statusCode: 500,
+            body: JSON.stringify({ message: "Error during authentication", errormessage: error }),
+        };
+        return response;
     }
-
-    const hashedPassword = hashPassword(password);
-
-    if (hashedPassword === user.password) {
-      const response = {
-        statusCode: 200,
-        body: JSON.stringify({ message: "authenticated" }),
-      };
-      return response;
-    }
-    
-    const response = {
-      statusCode: 401,
-      body: JSON.stringify({ message: "not authenticated" }),
-    };
-    return response;
-
-  } catch (error) {
-    const response = {
-      statusCode: 500,
-      body: JSON.stringify({ message: "Error during authentication", errormessage: error }),
-    };
-    return response;
-  }
 };
 
+/**
+ * Hashes a password using the SHA256 algorithm
+ * @param {string} password to hash
+ * @returns {string} hashed passwrod
+ */
 function hashPassword(password) {
-  return crypto
-    .createHash("sha256")
-    .update(password, "utf8")
-    .digest("hex");
+    return crypto
+        .createHash("sha256")
+        .update(password, "utf8")
+        .digest("hex");
 }
 
+/**
+ * Retrieves a user from the DynamoDB database based on username
+ * @param {string} username of the user to retrieve
+ * @returns {Promise<object|null>} a Promise that resolves with the user object or null if the user is not found.
+ * @throws {Error} - If there is an error retrieving the user from DynamoDB.
+ */
 const getUser = async (username) => {
-  const params = {
-    TableName: "users",
-    FilterExpression: "#user_name = :username",
-    ExpressionAttributeNames: {
-      "#user_name": "user_name",
-    },
-    ExpressionAttributeValues: {
-      ":username": username,
-    },
-  };
+    const params = {
+        TableName: "users",
+        FilterExpression: "#user_name = :username",
+        ExpressionAttributeNames: {
+            "#user_name": "user_name",
+        },
+        ExpressionAttributeValues: {
+            ":username": username,
+        },
+    };
 
   try {
-    const result = await dynamoDb.scan(params).promise();
-    return result.Items.length > 0 ? result.Items[0] : null;
-  } catch (error) {
-    console.error("Error finding user by username:", error);
-    throw error;
-  }
+      const result = await dynamoDb.scan(params).promise();
+      return result.Items.length > 0 ? result.Items[0] : null;
+    } catch (error) {
+        console.error("Error finding user by username:", error);
+        throw error;
+    }
 };

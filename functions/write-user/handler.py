@@ -5,8 +5,13 @@ import hashlib
 
 
 def handle(req):
+    """ 
+    Returns a json message containing the reponse from putting the given user data to the database
 
-    req_data = json.loads(req)
+    Parameter req: json message containing username, name and password for user to be added to the users database
+    """
+
+    reqData = json.loads(req)
 
     # Create the DynamoDB resource
     dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
@@ -19,32 +24,32 @@ def handle(req):
 
     # Find the maximum ID value
     if len(response['Items']) == 0:
-        max_id = 0
+        maxId = 0
     else:
-        max_id = max(item['user_id'] for item in response['Items'])
+        maxId = max(item['user_id'] for item in response['Items'])
 
     # Increment the ID by 1
-    new_id = max_id + 1
+    newId = maxId + 1
 
 
     # Extract username, fullname, and password from the request data
-    username = req_data["username"]
-    fullname = req_data["name"]
-    password = req_data["password"]
+    username = reqData["username"]
+    fullName = reqData["name"]
+    password = reqData["password"]
 
     # Hash the password using SHA-256
-    hashed_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
+    hashedPassword = hashlib.sha256(password.encode("utf-8")).hexdigest()
 
     # Connect to the "users" table
-    users_table = dynamodb.Table("users")
+    usersTable = dynamodb.Table("users")
 
     # Put the user data into the "users" table
-    response = users_table.put_item(
+    response = usersTable.put_item(
         Item={
-            "user_id" : new_id,
+            "user_id" : newId,
             "user_name": username,
-            "full_name": fullname,
-            "password": hashed_password,
+            "full_name": fullName,
+            "password": hashedPassword,
         }
     )
 
