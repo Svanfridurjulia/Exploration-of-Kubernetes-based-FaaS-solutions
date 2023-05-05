@@ -8,6 +8,7 @@ on:
 env:
   AWS_REGION: eu-west-1
   ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+  PATH: $PATH:/usr/local/bin
 
 jobs:
   deploy:
@@ -27,6 +28,10 @@ jobs:
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Install faas-cli
+        run: |
+          curl -sSL https://cli.openfaas.com | sudo sh
 
       - name: Build and push OpenFaaS functions
         id: build-and-push
