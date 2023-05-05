@@ -41,6 +41,8 @@ jobs:
           fn_name=${fn_name##*/}
           echo "fn_name: $fn_name"
           if [[ ! "$fn_name" =~ "charts" ]]; then
+            echo "Current directory: $(pwd)"
+            ls
             echo "Checking directory: $directory"
             cd $directory
             IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${fn_name}-v1
