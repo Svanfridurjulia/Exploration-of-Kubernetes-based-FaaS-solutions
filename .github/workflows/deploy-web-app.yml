@@ -29,7 +29,10 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build Docker image
-        run: docker build -t $ECR_REGISTRY/react-web-app:web-app-v2 ./React_frontend/web_app/ --file ./React_frontend/web_app/Dockerfile --no-cache
-        working-directory: React_frontend/web_app/
+        run: |
+          echo "Checking directory before changing: $(pwd)"
+          cd ./React_frontend/web_app/
+          echo "Checking directory after changing: $(pwd)"
+          docker build -t $ECR_REGISTRY/react-web-app:web-app-v2 .
       - name: Push Docker image
         run: docker push $ECR_REGISTRY/react-web-app:web-app-v2
