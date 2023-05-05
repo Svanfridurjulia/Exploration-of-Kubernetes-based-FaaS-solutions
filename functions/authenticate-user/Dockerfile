@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8080
+# Copy the OpenFaaS watchdog binary file to the image
+COPY --from=openfaas/of-watchdog:0.8.2 /fwatchdog /usr/bin/fwatchdog
 
-CMD ["npm", "start"]
+# Set the command to run your function
+CMD ["fwatchdog"]
