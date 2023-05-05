@@ -22,5 +22,12 @@ run OpenFaaS function:
 
 
 run Golang tests:
-    navigate to folder with a golang test file
+
+    cd functions/make-passw
     go test ./
+
+
+run pytests:
+
+    cd functions
+    pytest

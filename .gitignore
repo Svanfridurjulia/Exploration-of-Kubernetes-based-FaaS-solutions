@@ -3,3 +3,5 @@ build
 .secrets
 node_modules
 Terraform
+.pytest_cache
+__pycache__
