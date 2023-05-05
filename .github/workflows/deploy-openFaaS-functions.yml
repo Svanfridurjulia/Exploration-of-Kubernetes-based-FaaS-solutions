@@ -36,6 +36,8 @@ jobs:
       - name: Build and push Docker images
         id: build-and-push
         run: |
+          echo "Checking tree for functions"
+          tree functions/
           for directory in $(ls -d functions/*/) ; do
           fn_name=${directory%/}
           fn_name=${fn_name##*/}
