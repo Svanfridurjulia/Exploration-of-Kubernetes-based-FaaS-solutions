@@ -39,7 +39,7 @@ jobs:
           echo "Checking tree for functions"
           tree functions/
           cd functions/
-          for file in functions/*.yml; do
+          for file in *.yml; do
             fn_name=$(basename "$file" .yml)
             echo "fn_name: $fn_name"
             echo "Current directory: $(pwd)"
