@@ -45,7 +45,7 @@ jobs:
             echo "file: $file"
             echo "Current directory: $(pwd)"
             ls
-            IMAGE_NAME=$(yq '.functions."$fn_name".image' $file)
+            IMAGE_NAME=$(yq '.functions.$fn_name.image' $file)
             echo "IMAGE_NAME: $IMAGE_NAME"
             faas-cli build -f "$file"
             docker push $IMAGE_NAME
