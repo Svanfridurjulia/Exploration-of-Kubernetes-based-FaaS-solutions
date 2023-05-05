@@ -8,16 +8,12 @@ on:
 env:
   AWS_REGION: eu-west-1
   ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-  PATH: $PATH:/usr/local/bin
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install tar
-        run: sudo apt-get install -y tar
-    
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -31,25 +27,20 @@ jobs:
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-        
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-          sudo systemctl start docker
-          sudo systemctl enable docker
-          sudo usermod -aG docker $USER
 
-      - name: Install faas-cli
-        run: |
-          curl -sSL https://cli.openfaas.com | sudo sh
-
-      - name: Build and push OpenFaaS functions
+      - name: Build and push Docker images
         id: build-and-push
         run: |
-          for function in $(ls functions/*.yml); do
-            fn_name=$(basename "$function" .yml)
-            echo "Building function $fn_name..."
-            faas-cli build -f "$function" --shrinkwrap
-            faas-cli push -f "$function"
+          for directory in $(ls -d functions/*/) ; do
+          fn_name=${directory%/}
+          fn_name=${fn_name##*/}
+          echo "fn_name: $fn_name"
+          if [[ ! "$fn_name" =~ "charts" ]]; then
+            echo "Checking directory: $directory"
+            cd $directory
+            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${fn_name}-v1
+            docker build -t $IMAGE_NAME .
+            docker push $IMAGE_NAME
+            cd ../..
+          fi
           done
