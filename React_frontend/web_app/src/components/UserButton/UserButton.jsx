@@ -12,12 +12,12 @@ export const UserButton = ({option1, link1, option2, link2}) => {
     }
 
     return (
-        <div className="userContainer">
-            <button data-testid="userButton" className="userButton" onClick={handleDropdownClick} >
+        <div data-testid={option1} className="userContainer">
+            <button data-testid="profileButton" className="userButton" onClick={handleDropdownClick} >
                 <FontAwesomeIcon icon={faUser} />
             </button>
             {(dropdown) ? (
-                    <div className="dropdown">
+                    <div data-testid="dropdownDiv" className="dropdown">
                         <button data-testid="dropButton1" className="dropButton"><Link className="linked" to={link1}>{option1}</Link></button>
                         <button data-testid="dropButton2" className="dropButton"><Link className="linked" to={link2}>{option2}</Link></button>
                     </div>
