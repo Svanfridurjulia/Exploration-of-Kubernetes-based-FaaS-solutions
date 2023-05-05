@@ -44,7 +44,8 @@ jobs:
             echo "fn_name: $fn_name"
             echo "Current directory: $(pwd)"
             ls
-            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${fn_name}-v1
+            IMAGE_NAME=$(yq r "$file" functions.$fn_name.image)
+            echo "IMAGE_NAME: $IMAGE_NAME"
             faas-cli build -f "$file"
             docker push $IMAGE_NAME
           done
