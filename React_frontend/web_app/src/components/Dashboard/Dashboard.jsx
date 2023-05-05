@@ -8,32 +8,43 @@ import { PopupBanner } from "../PopUpBanner/PopUpBanner";
 import "./styles.css";
 
 export const Dashboard = () => {
+    // Define state variables using the useState() hook.
     const [post, setPost] = useState('');
     const [items, setItems] = useState(() => getAllPostItems());
     const [popUpText, setPopUpText] = useState('');
     const name = getCurrentUser();
 
+    // Click event handler for the "Post" button.
     const handleClickPost = () => {
         const date = new Date();
         let currentDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
         if (post.trim() === "") {
             return;
         }
-        addPostItem({user: name, time:currentDate, post: post})
+        // Add the new post item to the server using the addPostItem() function from the postService module.
+        addPostItem({user: name, time:currentDate, post: post});
+        // Update the items state variable with the new post item
         setItems(getAllPostItems);
+        // Reset the post state variable to an empty string.
         setPost('');
     }
 
+    // Click event handler for the "Demo" button.
     const handleClickDemo = async (event) => {
         event.preventDefault();
+
+        // Call the demoPythonFunction() function from the FunctionServices module to send a demo request to the server.
         const response = await demoPythonFunction();
+        // Set the popUpText state variable to the response from the server.
         setPopUpText(response);
     }
 
+    // Close the popup banner.
     const closePopup = () => {
         setPopUpText('');
     };
     
+    // Render the dashboard component.
     return (
         <div>
             <div className="banner">
