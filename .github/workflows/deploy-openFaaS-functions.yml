@@ -35,9 +35,10 @@ jobs:
           
       - name: Build and push Docker images
         run: |
-          cd /home/runner/work/Exploration-of-Kubernetes-based-FaaS-solutions/Exploration-of-Kubernetes-based-FaaS-solutions/functions
+          cd /home/runner/work/Exploration-of-Kubernetes-based-FaaS-solutions/Exploration-of-Kubernetes-based-FaaS-solutions/
           echo "Checking tree for functions"
           tree functions/
+          cd functions/
           for file in functions/*.yml; do
             fn_name=$(basename "$file" .yml)
             echo "fn_name: $fn_name"
