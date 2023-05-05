@@ -42,9 +42,10 @@ jobs:
           for file in *.yml; do
             fn_name=$(basename "$file" .yml)
             echo "fn_name: $fn_name"
+            echo "file: $file"
             echo "Current directory: $(pwd)"
             ls
-            IMAGE_NAME=$(yq r "$file" functions.$fn_name.image)
+            IMAGE_NAME=$(yq e ".functions.\"$fn_name\".image" "$file")
             echo "IMAGE_NAME: $IMAGE_NAME"
             faas-cli build -f "$file"
             docker push $IMAGE_NAME
