@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install tar
+        run: sudo apt-get install -y tar
+    
       - name: Checkout code
         uses: actions/checkout@v2
 
