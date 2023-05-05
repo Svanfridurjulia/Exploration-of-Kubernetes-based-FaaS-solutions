@@ -6,8 +6,12 @@ import { UserButton } from "../UserButton/UserButton";
 import "./styles.css";
 
 export const UserProfile = () => {
+    // Get the name of the current user
     const name = getCurrentUser();
+
+    // Use state to store the user's post items
     const [items, setItems] = useState(() => getAllUserPostItems(name)); 
+    
     return (
         <div>
             <div className="banner">
