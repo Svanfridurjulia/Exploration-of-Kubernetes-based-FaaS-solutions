@@ -1,0 +1,51 @@
+name: Deploy OpenFaaS functions to ECR
+
+on:
+  push:
+    branches:
+      - Telma
+
+env:
+  AWS_REGION: eu-west-1
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Install faas-cli
+        uses: cpanato/faas-cli-installer@main
+        with:
+          faas-cli-release: '0.14.1' # optional
+
+      - name: Build and push Docker images
+        id: build-and-push
+        run: |
+          for directory in $(ls -d functions/*/) ; do
+          fn_name=${directory%/}
+          fn_name=${fn_name##*/}
+          echo "fn_name: $fn_name"
+          if [[ ! "$fn_name" =~ "charts" ]]; then
+            echo "Checking directory: $directory"
+            cd $directory
+            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${fn_name}-v1
+            faas-cli build -f $directory
+            docker push $IMAGE_NAME
+            cd ../..
+          fi
+          done
