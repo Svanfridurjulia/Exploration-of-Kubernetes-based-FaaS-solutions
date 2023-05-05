@@ -6,6 +6,7 @@ import { sendEmailGoFunction } from "../../services/FunctionServices";
 import './styles.css';
 
 export const SignUp = () => {
+    // Define state variables using useState
     const [pwGenerated, setPwGenerated] = useState(false);
     const [pw, setPw] = useState("");
 
@@ -17,28 +18,38 @@ export const SignUp = () => {
     const [signUpError, setSignUpError] = useState('');
     const navigate = useNavigate()
 
+    // Called when the form is submitted
     const handleSubmit = async (event) => {
         event.preventDefault();
+        // Call the appropriate OpenFaaS function to send an email to the user
         sendEmailGoFunction(formData.username);
+        // Call the appropriate OpenFaaS function to write the user data to a database
         const response = await writeUserPythonFunction(formData);
+        // Set the current user using the setCurrentUser function from userService
         setCurrentUser(formData.username);
+        // Navigate to the dashboard
         navigate('/dashboard');
     }
 
+    // Called when a field in the form is changed
     const handleInputChange = (event) => {
         const { name, value } = event.target;
+        // Update the corresponding field in the formData state object
         setFormData({ ...formData, [name]: value });
     }
 
+    // Define a function that is called when the Back button is clicked
     const goBack = () => {
         navigate("/");
     }
 
+    // Define a function that is called when the Generate random password button is clicked
     const randomPw = async (event) => {
         event.preventDefault();
-        // Call the appropriate OpenFaaS function
+        // Call the appropriate OpenFaaS function to generate a random password
         const response = await passwordGoFunction();
         console.log(response);
+        // Set the state variables to display the generated password
         setPwGenerated(true);
         setPw(response);
     }
