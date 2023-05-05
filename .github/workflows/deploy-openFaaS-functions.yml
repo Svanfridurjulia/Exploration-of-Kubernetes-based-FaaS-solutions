@@ -36,6 +36,7 @@ jobs:
       - name: Build and push Docker images
         id: build-and-push
         run: |
+          cd /home/runner/work/Exploration-of-Kubernetes-based-FaaS-solutions/Exploration-of-Kubernetes-based-FaaS-solutions
           echo "Checking tree for functions"
           tree functions/
           for directory in $(ls -d functions/*/) ; do
