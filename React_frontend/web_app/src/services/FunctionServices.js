@@ -1,8 +1,8 @@
 
 
 
-const FUNCTIONS_URL = 'http://localhost:3005/function/';
-// const FUNCTIONS_URL = 'http://functions.fabulousasaservice.com/function/';
+// const FUNCTIONS_URL = 'http://localhost:3005/function/';
+const FUNCTIONS_URL = 'http://functions.fabulousasaservice.com:8080/function/';
 
 // const FUNCTIONS_URL = 'http://a18983579ab35409298ddbf805c122d5-969766123.eu-west-1.elb.amazonaws.com:8080/function/';
 

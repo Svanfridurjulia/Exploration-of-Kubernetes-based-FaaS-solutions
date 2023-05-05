@@ -347,7 +347,7 @@ resource "aws_secretsmanager_secret" "argocd" {
 }
 
 resource "aws_secretsmanager_secret" "email_password" {
-  name = "email-pass"
+  name = "mail-password"
 }
 
 resource "aws_secretsmanager_secret_version" "email_password" {

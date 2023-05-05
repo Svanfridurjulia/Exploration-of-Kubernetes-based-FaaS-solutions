@@ -18,7 +18,7 @@ type Secret struct {
 // getSecrets returns a string
 // The string contains the password to the sender email, gotten from AWS secrets
 func getSecrets() string {
-	secretName := "email-pass"
+	secretName := "mail-password"
 	region := "eu-west-1"
 
 	config, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(region))

@@ -19,6 +19,13 @@ module.exports = async (event, context) => {
     const username = event.body.username;
     const password = event.body.password;
 
+    const headers = {
+        'Access-Control-Allow-Origin': 'http://web-app.fabulousasaservice.com',
+        'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Content-Type': 'application/json'
+    };
+
     try {
       // Try to get the user object from the DynamoDB database
         const user = await getUser(username);
@@ -26,6 +33,7 @@ module.exports = async (event, context) => {
           // If user object is not found, return 400 Bad Request response
             const response = {
                 statusCode: 400,
+                headers: headers,
                 body: JSON.stringify({ message: "invalid username and/or password" }),
             };
             return response;
@@ -39,6 +47,7 @@ module.exports = async (event, context) => {
             // If the passwords match, return 200 OK response
             const response = {
                 statusCode: 200,
+                headers: headers,
                 body: JSON.stringify({ message: "authenticated" }),
             };
             return response;
@@ -47,6 +56,7 @@ module.exports = async (event, context) => {
         // If the hashed password does not match the stored password, return 401 Unauthorized response
         const response = {
             statusCode: 401,
+            headers: headers,
             body: JSON.stringify({ message: "not authenticated" }),
         };
         return response;
@@ -55,6 +65,7 @@ module.exports = async (event, context) => {
     } catch (error) {
         const response = {
             statusCode: 500,
+            headers: headers,
             body: JSON.stringify({ message: "Error during authentication", errormessage: error }),
         };
         return response;
