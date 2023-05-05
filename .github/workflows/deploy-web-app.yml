@@ -33,18 +33,7 @@ jobs:
         working-directory: React_frontend/web_app/
       - name: Push Docker image
         run: |
-#          for directory in $(ls -d functions/*/) ; do
-#          fn_name=${directory%/}
-#          fn_name=${fn_name##*/}
-#          echo "fn_name: $fn_name"
-#          if [[ ! "$fn_name" =~ "charts" ]]; then
-#            echo "Checking directory: $directory"
-#            cd $directory
-#            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${fn_name}-v1
-#            docker build -t $IMAGE_NAME .
-#            docker push $IMAGE_NAME
-#            cd ../..
-            docker tag $ECR_REGISTRY/react-web-app:web-app-v2
-            docker push $ECR_REGISTRY/react-web-app:web-app-v2
+          docker tag $ECR_REGISTRY/react-web-app:web-app-v2
+          docker push $ECR_REGISTRY/react-web-app:web-app-v2
           fi
           done
