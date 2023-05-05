@@ -44,7 +44,7 @@ jobs:
             echo "Current directory: $(pwd)"
             ls
             echo "Checking directory: $directory"
-            cd $directory
+            cd "./$directory"
             IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${fn_name}-v1
             faas-cli build -f $directory
             docker push $IMAGE_NAME
