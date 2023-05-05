@@ -1,15 +1,23 @@
-FROM node:14-alpine
+FROM openfaas/of-watchdog:0.8.0 as watchdog
 
-WORKDIR /app
+RUN mkdir -p /home/app
 
-COPY package*.json ./
+COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
+RUN chmod +x /usr/bin/fwatchdog
 
-RUN npm install
+# Add non root user
+RUN addgroup --system app && adduser app --system --ingroup app
+RUN chown app /home/app
 
-COPY . .
+USER app
+ENV PATH=$PATH:/home/app/.local/bin
 
-# Copy the OpenFaaS watchdog binary file to the image
-COPY --from=openfaas/of-watchdog:0.8.2 /fwatchdog /usr/bin/fwatchdog
+USER root
+WORKDIR /home/app/
+RUN chown -R app:app *
+USER app
 
-# Set the command to run your function
+ENV fprocess="python app.py"
+
+
 CMD ["fwatchdog"]
