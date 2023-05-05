@@ -32,25 +32,19 @@ jobs:
         uses: cpanato/faas-cli-installer@main
         with:
           faas-cli-release: '0.14.1' # optional
-
+          
       - name: Build and push Docker images
-        id: build-and-push
         run: |
-          cd /home/runner/work/Exploration-of-Kubernetes-based-FaaS-solutions/Exploration-of-Kubernetes-based-FaaS-solutions
+          cd /home/runner/work/Exploration-of-Kubernetes-based-FaaS-solutions/Exploration-of-Kubernetes-based-FaaS-solutions/functions
           echo "Checking tree for functions"
           tree functions/
-          for directory in $(ls -d functions/*/) ; do
-          fn_name=${directory%/}
-          fn_name=${fn_name##*/}
-          echo "fn_name: $fn_name"
-          if [[ ! "$fn_name" =~ "charts" ]]; then
+          for file in functions/*.yml; do
+            fn_name=$(basename "$file" .yml)
+            echo "fn_name: $fn_name"
             echo "Current directory: $(pwd)"
             ls
-            echo "Checking directory: $directory"
-            cd "./$directory"
             IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${fn_name}-v1
-            faas-cli build -f $directory
+            faas-cli build -f "$file"
             docker push $IMAGE_NAME
-            cd ../..
-          fi
           done
+
