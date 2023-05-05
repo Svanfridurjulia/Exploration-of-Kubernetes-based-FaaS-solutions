@@ -108,7 +108,7 @@ export function sendEmailGoFunction(username) {
 export async function demoPythonFunction(){
 
   try {
-    const resp = await fetch(FUNCTIONS_URL + 'demo-function', {
+    const resp = await fetch(FUNCTIONS_URL + 'cowboy-function', {
             method: "POST",
             headers: {
                 'Content-type': 'application/json'
