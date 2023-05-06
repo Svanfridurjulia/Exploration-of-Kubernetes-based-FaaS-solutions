@@ -3,13 +3,17 @@ import { translationPythonFunction } from '../../services/FunctionServices';
 import { useState } from 'react';
 
 export const PostItem = ({id, user, time, post}) => {
+    // Define state variables using the useState() hook.
     const [translated, setTranslated] = useState(false);
     const [translatedText, setTranslatedText] = useState(post);
 
+    // Handles click on the translate button by calling the translation function and setting the translated text.
     const handleClick = async (event) => {
         event.preventDefault();
+        // Calls the translation function with the post text.
         const response = await translationPythonFunction({"text": post});
         const obj = JSON.parse(response);
+        // Sets the translated text in state.
         setTranslatedText(obj.text);
         setTranslated(true);
     }
