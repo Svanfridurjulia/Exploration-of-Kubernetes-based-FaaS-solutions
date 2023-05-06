@@ -1,9 +1,9 @@
-name: Deploy to ECR
+name: Deploy web app to ECR
 
 on:
   push:
     branches:
-      - Svanfríður
+      - main
 
 env:
   AWS_REGION: eu-west-1
@@ -28,19 +28,11 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build and push Docker images
-        id: build-and-push
+      - name: Build Docker image
         run: |
-          for directory in $(ls -d functions/*/) ; do
-          fn_name=${directory%/}
-          fn_name=${fn_name##*/}
-          echo "fn_name: $fn_name"
-          if [[ ! "$fn_name" =~ "charts" ]]; then
-            echo "Checking directory: $directory"
-            cd $directory
-            IMAGE_NAME=$ECR_REGISTRY/faas-function-repository:${fn_name}-v1
-            docker build -t $IMAGE_NAME .
-            docker push $IMAGE_NAME
-            cd ../..
-          fi
-          done
+          echo "Checking directory before changing: $(pwd)"
+          cd ./React_frontend/web_app/
+          echo "Checking directory after changing: $(pwd)"
+          docker build -t $ECR_REGISTRY/react-web-app:web-app-v2 .
+      - name: Push Docker image
+        run: docker push $ECR_REGISTRY/react-web-app:web-app-v2

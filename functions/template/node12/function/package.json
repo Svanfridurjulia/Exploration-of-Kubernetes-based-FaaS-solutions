@@ -4,14 +4,9 @@
   "description": "OpenFaaS Function",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0",
-    "start": "fwatchdog"
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "keywords": [],
   "author": "OpenFaaS Ltd",
-  "license": "MIT",
-  "dependencies": {
-    "aws-sdk": "^2.1030.0",
-    "bcrypt": "^5.0.1"
-  }
+  "license": "MIT"
 }
