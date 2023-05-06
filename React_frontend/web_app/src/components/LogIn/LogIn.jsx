@@ -5,6 +5,7 @@ import { setCurrentUser } from "../../services/userService";
 import './styles.css';
 
 export const LogIn = () => {
+    // Use the useState() hook to create state variables for the form data and any login errors.
     const [formData, setFormData] = useState({
         username: "",
         password: ""
@@ -12,29 +13,36 @@ export const LogIn = () => {
     const [loginError, setLoginError] = useState('');
     const navigate = useNavigate()
 
+    // Go back to the home page.
     const goBack = () => {
         navigate("/");
     }
 
+    // Define a function to handle the form submission.
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData);
+        // Call the authenticationNodeFunction() service function to authenticate the user.
         const response = await authenticationNodeFunction(formData);
         console.log(response);
+        // If the authentication succeeds, set the current user and navigate to the dashboard page.
         if (response.statusCode === 200){
             setCurrentUser(formData.username);
             navigate('/dashboard');
         }
+        // If the authentication fails, display an error message.
         else {
             setLoginError("Username and/or password is incorrect");
         }
     }
     
+    // Handle changes to the form inputs.
     const handleInputChange = (event) => {
         const {name, value} = event.target;
         setFormData({ ...formData, [name]: value });
     }
     
+    // Render the login page.
     return(
         <div>
             <h1 data-testid="pageTitle">Log In</h1>

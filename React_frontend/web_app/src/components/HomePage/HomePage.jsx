@@ -2,16 +2,19 @@ import { useNavigate } from "react-router-dom";
 import './styles.css';
 
 export const HomePage = () => {
+    // Use the useNavigate() hook to get access to the navigation object.
     const navigate = useNavigate();
 
+
+    // Functions that navigate to the log in and sign up pages.
     const goToLogIn = () => {
         navigate("/login");
     }
-
     const goToSignUp = () => {
         navigate("/signup");
     }
-
+    	
+    // Render the home page.
     return (
         <div className="homePage">
             <h1 data-testid="pageName" className="pageName">Welcome to Fabulous as a Service!</h1>
