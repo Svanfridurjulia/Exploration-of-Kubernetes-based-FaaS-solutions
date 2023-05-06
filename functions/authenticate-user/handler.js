@@ -24,7 +24,7 @@ module.exports = async (event, context) => {
     console.log(requestBody);
     console.log(httpMethod);
 
-    context.headers = {
+    context.headerValues = {
         'Access-Control-Allow-Origin': 'http://web-app.fabulousasaservice.com',
         'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
