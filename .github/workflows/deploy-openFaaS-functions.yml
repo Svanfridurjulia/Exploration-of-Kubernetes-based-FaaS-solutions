@@ -3,7 +3,7 @@ name: Deploy OpenFaaS functions to ECR
 on:
   push:
     branches:
-      - Telma
+      - main
 
 env:
   AWS_REGION: eu-west-1
