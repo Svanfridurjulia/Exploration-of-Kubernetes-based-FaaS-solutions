@@ -6,4 +6,4 @@ functions:
   get-translation:
     lang: python
     handler: ./get-translation
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:get-translation-v1
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:get-translation-v2

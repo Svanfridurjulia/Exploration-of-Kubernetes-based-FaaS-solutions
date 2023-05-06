@@ -21,3 +21,6 @@ ENV fprocess="python app.py"
 
 
 CMD ["fwatchdog"]
+
+
+

@@ -13,18 +13,64 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 // Export an asynchronous function that handles authentication requests
 // Returns a response object with a status code and message.
 module.exports = async (event, context) => {
-    console.log(event.body);
 
-    // Get the username and password from the request body
-    const username = event.body.username;
-    const password = event.body.password;
+    console.log(event);
+    console.log(context);
+    console.log(event.method);
+    const requestBody = JSON.parse(context.body || "{}");
+    const httpMethod = context.method;
 
+    console.log("NEW log");
+    console.log(requestBody);
+    console.log(httpMethod);
+
+    context.headers = {
+        'Access-Control-Allow-Origin': 'http://web-app.fabulousasaservice.com',
+        'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Content-Type': 'application/json'
+    };
     const headers = {
         'Access-Control-Allow-Origin': 'http://web-app.fabulousasaservice.com',
         'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         'Content-Type': 'application/json'
     };
+
+    // Check for the preflight request (OPTIONS method)
+    if (event.method === 'OPTIONS') {
+        console.log("returning")
+        const response = {
+            statusCode: 204,
+            headers: headers,
+            body: '',
+        };
+        return response;
+    }
+
+    if (!event.body || Object.keys(event.body).length === 0) {
+        const response = {
+            statusCode: 400,
+            headers: headers,
+            body: JSON.stringify({ message: "Missing request body" }),
+        };
+        return response;
+    }
+
+
+    // Get the username and password from the request body
+    const username = event.body.username;
+    const password = event.body.password;
+
+    if (!username || !password) {
+        const response = {
+            statusCode: 400,
+            headers: headers,
+            body: JSON.stringify({ message: "Missing username and/or password" }),
+        };
+        return response;
+    }
+
 
     try {
       // Try to get the user object from the DynamoDB database

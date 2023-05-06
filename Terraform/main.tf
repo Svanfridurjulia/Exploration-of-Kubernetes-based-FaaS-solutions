@@ -114,7 +114,7 @@ module "eks" {
 
       min_size     = 0
       max_size     = 7
-      desired_size = 2
+      desired_size = 5
 
     }
   }
@@ -422,7 +422,7 @@ resource "kubernetes_deployment" "my-app" {
       spec {
         container {
           name  = "my-app"
-          image = "112172658395.dkr.ecr.eu-west-1.amazonaws.com/react-wep-app:web-app-v19"
+          image = "112172658395.dkr.ecr.eu-west-1.amazonaws.com/react-wep-app:web-app-v3"
 
           port {
             container_port = 3000
@@ -495,27 +495,27 @@ resource "helm_release" "grafana" {
   ]
 }
 
-resource "kubernetes_ingress" "grafana" {
-  metadata {
-    name      = "grafana-ingress"
-    namespace = "grafana"
-  }
+# resource "kubernetes_ingress" "grafana" {
+#   metadata {
+#     name      = "grafana-ingress"
+#     namespace = "grafana"
+#   }
 
-  spec {
-    rule {
-      host = "grafana.fabulousasaservice.com"
+#   spec {
+#     rule {
+#       host = "grafana.fabulousasaservice.com"
 
-      http {
-        path {
-          backend {
-            service_name = helm_release.grafana.metadata[0].name
-            service_port = 80
-          }
-          path = "/"
-        }
-      }
-    }
-  }
-}
+#       http {
+#         path {
+#           backend {
+#             service_name = helm_release.grafana.metadata[0].name
+#             service_port = 80
+#           }
+#           path = "/"
+#         }
+#       }
+#     }
+#   }
+# }
 
 
