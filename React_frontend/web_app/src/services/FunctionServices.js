@@ -50,8 +50,9 @@ export async function passwordGoFunction() {
             }
         });
 
-        // Extract the generated password from the JSON in the response body.
-        const returnData = await resp.json();
+        // Extract the generated password from the response body.
+        const returnData = await resp.text();
+        console.log(returnData)
         return returnData;
 
     } catch (error) {
@@ -105,6 +106,7 @@ export async function writeUserPythonFunction(data) {
         })
         // Extract the response data from the JSON in the response body.
         const returnData = await resp.json();
+        console.log(returnData)
         return returnData;
     }
     catch (error) {
