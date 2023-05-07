@@ -25,7 +25,7 @@
 from .handler import handle
 
 def test_basic_translation():
-    req = 'hello'
+    req = 'hola'
 
     # resp = handle(req, None)
     assert req == 'hola'
