@@ -22,13 +22,13 @@
 # #         resp = h.handle(req)
 # #         assert resp == '¡Me encanta Go! Podría escribir 10 funciones todos los días'
 
-# from .handler import handle
+from .handler import handle
 
-# def test_basic_translation():
-#     req = 'hello'
+def test_basic_translation():
+    req = 'hello'
 
-#     resp = handle(req, None)
-#     assert resp == 'hola'
+    # resp = handle(req, None)
+    assert req == 'hola'
 
 # def test_empty_translation():
 #     req = ''
