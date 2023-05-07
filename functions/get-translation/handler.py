@@ -13,7 +13,7 @@ def handle(event, context):
 
     #Set the CORS headers
     headers = {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'http://web-app.fabulousasaservice.com',
         'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         'Content-Type': 'application/json'

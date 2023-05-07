@@ -87,7 +87,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 
 	// Handle OPTIONS request and return immediately
 	if r.Method == "OPTIONS" {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Origin", "http://web-app.fabulousasaservice.com")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		w.WriteHeader(http.StatusNoContent)
