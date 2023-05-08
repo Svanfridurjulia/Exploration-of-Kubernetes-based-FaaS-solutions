@@ -21,10 +21,10 @@ export const LogIn = () => {
     // Define a function to handle the form submission.
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
+        // console.log(formData);
         // Call the authenticationNodeFunction() service function to authenticate the user.
         const response = await authenticationNodeFunction(formData);
-        console.log(response);
+        // console.log(response);
         // If the authentication succeeds, set the current user and navigate to the dashboard page.
         if (response.statusCode === 200){
             setCurrentUser(formData.username);
