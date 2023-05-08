@@ -52,11 +52,11 @@ export const LogIn = () => {
             <div id="login" className="loginContainer">
                 <form data-testid="form" id="loginForm" onSubmit={handleSubmit}>
                     <div>
-                        <label data-testid="usernameLabel" for="username">Username</label>
+                        <label data-testid="usernameLabel" htmlFor="username">Username</label>
                         <input data-testid="usernameInput" placeholder="Your Username..." type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required></input>
                     </div>
                     <div>
-                        <label data-testid="passwordLabel" for="password">Password</label>
+                        <label data-testid="passwordLabel" htmlFor="password">Password</label>
                         <input data-testid="passwordInput" placeholder="Your Password..." type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} required></input>
                     </div>
                     <div className="errorMessage">

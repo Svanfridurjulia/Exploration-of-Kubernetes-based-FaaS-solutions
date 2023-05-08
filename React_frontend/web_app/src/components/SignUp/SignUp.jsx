@@ -48,7 +48,7 @@ export const SignUp = () => {
         event.preventDefault();
         // Call the appropriate OpenFaaS function to generate a random password
         const response = await passwordGoFunction();
-        console.log(response);
+        // console.log(response);
         // Set the state variables to display the generated password
         setPwGenerated(true);
         setPw(response);
@@ -63,15 +63,15 @@ export const SignUp = () => {
             <div id="signUp" className="signUpContainer">
                 <form data-testid="signupForm" id="signupForm" onSubmit={handleSubmit}>
                     <div>
-                        <label data-testid="nameLabel" for="name">Name:</label>
+                        <label data-testid="nameLabel" htmlFor="name">Name:</label>
                         <input data-testid="nameInput" placeholder="Your Full Name..." type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required></input>
                     </div>
                     <div>
-                        <label data-testid="usernameLabel" for="username">Username:</label>
+                        <label data-testid="usernameLabel" htmlFor="username">Username:</label>
                         <input data-testid="usernameInput" placeholder="Your Username..." type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required></input>
                     </div>
                     <div>
-                        <label data-testid="passwordLabel" for="password">Password:</label>
+                        <label data-testid="passwordLabel" htmlFor="password">Password:</label>
                         <input data-testid="passwordInput" placeholder="Your Password..." type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} required></input>
                     </div>
                     <div className="pwGenerator">
