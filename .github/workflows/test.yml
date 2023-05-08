@@ -51,4 +51,4 @@ jobs:
           working-directory: React_frontend/web_app/
       - name: Run tests
         working-directory: React_frontend/web_app/
-        run: npm test
+        run: CI=false && npm test
