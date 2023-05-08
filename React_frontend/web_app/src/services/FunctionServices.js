@@ -168,7 +168,7 @@ export async function demoPythonFunction() {
  */
 export async function writePostNodeFunction(data) {
     try {
-        // Send a POST request to the demo endpoint on the server.
+        // Send a POST request to the write-post endpoint on the server.
         const resp = await fetch(FUNCTIONS_URL + 'write-post', {
             method: "POST",
             headers: {

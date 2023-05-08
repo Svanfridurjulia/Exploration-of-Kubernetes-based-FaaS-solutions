@@ -10,14 +10,14 @@ run frontend:
 
     cd React_Frontend/web_app
     npm start
-    
+
 
 run OpenFaaS function:
 
     kubectl port-forward -n openfaas svc/gateway 8080:8080
 
 
-run Golang tests:
+run Golang test:
 
     cd functions/make-passw
     go test ./
@@ -25,7 +25,6 @@ run Golang tests:
 
 run pytests:
 
-    cd functions
     pytest
 
 run React tests:
@@ -33,3 +32,5 @@ run React tests:
     cd React_frontend
     cd web_app
     npm test
+
+Please refer to the operating manual for further information: 
