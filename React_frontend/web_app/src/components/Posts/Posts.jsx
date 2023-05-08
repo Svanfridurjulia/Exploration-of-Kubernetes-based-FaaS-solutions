@@ -8,8 +8,8 @@ export const Posts = ({posts}) => {
 
     return (
         <div>
-            {posts.map(b => <PostItem
-                    key = {b.id}
+            {posts.map((b, index) => <PostItem
+                    key = {`post-${b.id}-${index}`}
                     id = {b.id}
                     user = {b.user}
                     time = {b.time}
