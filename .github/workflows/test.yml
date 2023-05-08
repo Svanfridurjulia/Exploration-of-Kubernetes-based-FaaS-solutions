@@ -3,7 +3,7 @@ name: Tests
 on:
   push:
     branchers:
-      - Telma
+      - main
 
 jobs:
   golang_tests:
