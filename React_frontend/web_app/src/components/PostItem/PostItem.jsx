@@ -12,7 +12,6 @@ export const PostItem = ({id, user, time, post}) => {
         event.preventDefault();
         // Calls the translation function with the post text.
         const response = await translationPythonFunction({"text": post});
-        console.log(response);
         // const obj = JSON.parse(response);
         // Sets the translated text in state.
         setTranslatedText(response.text);
