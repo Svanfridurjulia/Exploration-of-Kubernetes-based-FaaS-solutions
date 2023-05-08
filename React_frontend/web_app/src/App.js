@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { HomePage } from './components/HomePage/HomePage';
 import { LogIn } from './components/LogIn/LogIn';
-import { Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { SignUp } from './components/SignUp/SignUp';
@@ -13,7 +13,8 @@ function App() {
 	const posts = [];
 
   return (
-		<PostContext.Provider value={{posts}}>
+	<PostContext.Provider value={{posts}}>
+		<BrowserRouter>
 			<div className="App">
 				<Routes>
 					<Route exact path='/' element={ <HomePage /> }/>
@@ -23,7 +24,9 @@ function App() {
 					<Route exact path='/posts' element={<UserProfile/>}/>
 				</Routes>
 			</div>
-		</PostContext.Provider>
+		</BrowserRouter>
+	</PostContext.Provider>
+	
 	);
 }
 
