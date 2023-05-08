@@ -117,15 +117,6 @@ export async function writeUserPythonFunction(data) {
 
 
 
-// curl -X POST http://a3c846d513571471da8da03057441b5b-920512917.eu-west-1.elb.amazonaws.com:8080/function/write-user \
-//   -H 'Content-Type: application/json' \
-//   -d '{
-//         name: "testing",
-//         username: "testing",
-//         password: "testing"
-//     }'
-
-
 /**
  * Sends an email notification request to the backend server.
  * @param {String} username The username of registered user.
@@ -171,11 +162,27 @@ export async function demoPythonFunction() {
     }
 }
 
+/**
+ * Sends a request to demo function in the backend server.
+ * @returns {Promise} A Promise that resolves with the response data from the server, or rejects with an error if there is one.
+ */
+export async function writePostNodeFunction(data) {
+    try {
+        // Send a POST request to the demo endpoint on the server.
+        const resp = await fetch(FUNCTIONS_URL + 'write-post', {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        // Extract the response data from the JSON in the response body.
+        const returnData = await resp.json();
+        console.log(returnData);
+        return returnData;
 
-// module.exports = {
-//     authenticationNodeFunction,
-//     passwordGoFunction,
-//     translationPythonFunction,
-//     writeUserPythonFunction,
-//     sendEmailGoFunction
-// }
+    } catch (error) {
+        // Log any errors that occur during the request.
+        console.error(error);
+    }
+}

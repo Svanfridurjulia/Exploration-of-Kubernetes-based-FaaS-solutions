@@ -153,13 +153,6 @@ resource "aws_dynamodb_table" "table2" {
     type = "N"
   }
 
-  range_key = "timestamp"
-
-  attribute {
-    name = "timestamp"
-    type = "N"
-  }
-
   tags = {
     Environment = "dev"
   }
@@ -398,13 +391,42 @@ resource "aws_iam_policy" "worker_node_permissions" {
   })
 }
 
+resource "null_resource" "my_app_lb" {
+  depends_on = [
+    kubernetes_deployment.my-app,
+  ]
+
+  provisioner "local-exec" {
+    command = <<-EOC
+      kubectl get svc my-app \
+        --token="${data.aws_eks_cluster_auth.this.token}" \
+        --server="${module.eks.cluster_endpoint}" \
+        --insecure-skip-tls-verify=true \
+        -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' > my_app_lb_hostname.txt
+    EOC
+  }
+}
+
+data "local_file" "my_app_lb_hostname" {
+  depends_on = [null_resource.my_app_lb]
+  filename   = "my_app_lb_hostname.txt"
+}
+
+resource "aws_route53_record" "app_cname" {
+  zone_id = data.aws_route53_zone.your_domain.id
+  name    = "web-app.fabulousasaservice.com"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [data.local_file.my_app_lb_hostname.content]
+}
+
 resource "kubernetes_deployment" "my-app" {
   metadata {
     name = "my-app"
   }
 
   spec {
-    replicas = 1
+    replicas = 3
 
     selector {
       match_labels = {
@@ -422,7 +444,7 @@ resource "kubernetes_deployment" "my-app" {
       spec {
         container {
           name  = "my-app"
-          image = "112172658395.dkr.ecr.eu-west-1.amazonaws.com/react-wep-app:web-app-v3"
+          image = "112172658  395.dkr.ecr.eu-west-1.amazonaws.com/react-web-app:web-app-v3"
 
           port {
             container_port = 3000
@@ -470,15 +492,15 @@ resource "kubernetes_namespace" "grafana" {
     name = "grafana"
   }
 }
-
-
+# }
 resource "aws_route53_record" "grafana_cname" {
   zone_id = data.aws_route53_zone.your_domain.id
   name    = "grafana.fabulousasaservice.com"
   type    = "CNAME"
   ttl     = "300"
-  records = [data.local_file.lb_hostname.content]
+  records = [data.local_file.grafana_lb_hostname.content]
 }
+
 
 
 resource "helm_release" "grafana" {
@@ -490,32 +512,38 @@ resource "helm_release" "grafana" {
   values = [
     <<-EOT
     service:
-      type: ClusterIP
+      type: LoadBalancer
+
+      datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus-server.prometheus.svc.cluster.local
     EOT
   ]
 }
 
-# resource "kubernetes_ingress" "grafana" {
-#   metadata {
-#     name      = "grafana-ingress"
-#     namespace = "grafana"
-#   }
+resource "null_resource" "grafana_lb" {
+  depends_on = [
+    helm_release.grafana,
+    kubernetes_namespace.grafana,
+  ]
 
-#   spec {
-#     rule {
-#       host = "grafana.fabulousasaservice.com"
+  provisioner "local-exec" {
+    command = <<-EOC
+      kubectl get svc grafana -n grafana \
+        --token="${data.aws_eks_cluster_auth.this.token}" \
+        --server="${module.eks.cluster_endpoint}" \
+        --insecure-skip-tls-verify=true \
+        -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' > grafana_lb_hostname.txt
+    EOC
+  }
+}
 
-#       http {
-#         path {
-#           backend {
-#             service_name = helm_release.grafana.metadata[0].name
-#             service_port = 80
-#           }
-#           path = "/"
-#         }
-#       }
-#     }
-#   }
-# }
+data "local_file" "grafana_lb_hostname" {
+  depends_on = [null_resource.grafana_lb]
+  filename   = "grafana_lb_hostname.txt"
+}
+
 
 

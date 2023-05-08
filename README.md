@@ -10,11 +10,7 @@ run frontend:
 
     cd React_Frontend/web_app
     npm start
-
-run middleware: 
-
-    cd Middleware
-    npm start
+    
 
 run OpenFaaS function:
 

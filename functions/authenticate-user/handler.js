@@ -14,16 +14,7 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 // Returns a response object with a status code and message.
 module.exports = async (event, context) => {
 
-    console.log(event);
-    console.log(context);
-    console.log(event.method);
-    const requestBody = JSON.parse(context.body || "{}");
-    const httpMethod = context.method;
-
-    console.log("NEW log");
-    console.log(requestBody);
-    console.log(httpMethod);
-
+    //Setting the CORS headers
     context.headerValues = {
         'Access-Control-Allow-Origin': 'http://web-app.fabulousasaservice.com',
         'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
@@ -61,6 +52,7 @@ module.exports = async (event, context) => {
     // Get the username and password from the request body
     const username = event.body.username;
     const password = event.body.password;
+
 
     if (!username || !password) {
         const response = {

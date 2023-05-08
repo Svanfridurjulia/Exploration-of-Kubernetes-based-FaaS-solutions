@@ -33,6 +33,6 @@ jobs:
           echo "Checking directory before changing: $(pwd)"
           cd ./React_frontend/web_app/
           echo "Checking directory after changing: $(pwd)"
-          docker build -t $ECR_REGISTRY/react-web-app:web-app-v3 .
+          docker build -t $ECR_REGISTRY/react-web-app:web-app-v4 .
       - name: Push Docker image
-        run: docker push $ECR_REGISTRY/react-web-app:web-app-v3
+        run: docker push $ECR_REGISTRY/react-web-app:web-app-v4
