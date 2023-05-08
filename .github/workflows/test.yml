@@ -14,14 +14,12 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: '1.17'
-      - name: Initialize module for make-passw package
-        run: cd functions/make-passw && go mod init github.com/Svanfridurjulia/Exploration-of-Kubernetes-based-FaaS-solutions/functions/make-passw
       - name: Install dependencies
-        run: go get .
+        run: cd functions/make-passw && go get .
       - name: Build
-        run: go build -v ./...
+        run: cd functions/make-passw && go build -v ./...
       - name: Test with the Go CLI
-        run: go test
+        run: cd functions/make-passw && go test
   python_tests:
     runs-on: ubuntu-latest
     steps:
@@ -37,19 +35,20 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Test with pytest
         run: pytest
-  test_ui:
-    timeout-minutes: 60
+  frontend_tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
-      - name: Move to right folder
-        run: cd React_frontend/web_app/
+          node-version: ${{ matrix.node-version }}
       - name: Install dependencies
+        working-directory: React_frontend/web_app/
         run: npm ci
       - name: Download deps
         uses: bahmutov/npm-install@v1
+        with:
+          working-directory: React_frontend/web_app/
       - name: Run tests
+        working-directory: React_frontend/web_app/
         run: npm test
