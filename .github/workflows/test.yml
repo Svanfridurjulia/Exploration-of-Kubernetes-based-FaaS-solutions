@@ -17,7 +17,9 @@ jobs:
       - name: Move to right folder
         run: cd functions/make-passw
       - name: create module
-        run: go mod init
+        run: |
+          export GO111MODULE=on
+          go mod init
       - name: Install dependencies
         run: go get .
       - name: Build
@@ -47,6 +49,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Move to right folder
+        run: cd React_frontent/web_app
       - name: Install dependencies
         run: npm ci
       - name: Download deps
