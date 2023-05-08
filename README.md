@@ -29,7 +29,6 @@ run Golang tests:
 
 run pytests:
 
-    cd functions
     pytest
 
 run React tests:
