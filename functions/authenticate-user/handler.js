@@ -13,11 +13,56 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 // Export an asynchronous function that handles authentication requests
 // Returns a response object with a status code and message.
 module.exports = async (event, context) => {
-    console.log(event.body);
+
+    //Setting the CORS headers
+    context.headerValues = {
+        'Access-Control-Allow-Origin': 'http://web-app.fabulousasaservice.com',
+        'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Content-Type': 'application/json'
+    };
+    const headers = {
+        'Access-Control-Allow-Origin': 'http://web-app.fabulousasaservice.com',
+        'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Content-Type': 'application/json'
+    };
+
+    // Check for the preflight request (OPTIONS method)
+    if (event.method === 'OPTIONS') {
+        console.log("returning")
+        const response = {
+            statusCode: 204,
+            headers: headers,
+            body: '',
+        };
+        return response;
+    }
+
+    if (!event.body || Object.keys(event.body).length === 0) {
+        const response = {
+            statusCode: 400,
+            headers: headers,
+            body: JSON.stringify({ message: "Missing request body" }),
+        };
+        return response;
+    }
+
 
     // Get the username and password from the request body
     const username = event.body.username;
     const password = event.body.password;
+
+
+    if (!username || !password) {
+        const response = {
+            statusCode: 400,
+            headers: headers,
+            body: JSON.stringify({ message: "Missing username and/or password" }),
+        };
+        return response;
+    }
+
 
     try {
       // Try to get the user object from the DynamoDB database
@@ -26,6 +71,7 @@ module.exports = async (event, context) => {
           // If user object is not found, return 400 Bad Request response
             const response = {
                 statusCode: 400,
+                headers: headers,
                 body: JSON.stringify({ message: "invalid username and/or password" }),
             };
             return response;
@@ -39,6 +85,7 @@ module.exports = async (event, context) => {
             // If the passwords match, return 200 OK response
             const response = {
                 statusCode: 200,
+                headers: headers,
                 body: JSON.stringify({ message: "authenticated" }),
             };
             return response;
@@ -47,6 +94,7 @@ module.exports = async (event, context) => {
         // If the hashed password does not match the stored password, return 401 Unauthorized response
         const response = {
             statusCode: 401,
+            headers: headers,
             body: JSON.stringify({ message: "not authenticated" }),
         };
         return response;
@@ -55,6 +103,7 @@ module.exports = async (event, context) => {
     } catch (error) {
         const response = {
             statusCode: 500,
+            headers: headers,
             body: JSON.stringify({ message: "Error during authentication", errormessage: error }),
         };
         return response;

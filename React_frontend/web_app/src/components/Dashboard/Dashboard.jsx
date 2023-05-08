@@ -3,7 +3,7 @@ import { Posts } from "../Posts/Posts";
 import { useState} from "react";
 import { getAllPostItems, addPostItem } from "../../services/postService";
 import { getCurrentUser } from "../../services/userService";
-import { demoPythonFunction } from "../../services/FunctionServices";
+import { demoPythonFunction, writePostNodeFunction } from "../../services/FunctionServices";
 import { PopupBanner } from "../PopUpBanner/PopUpBanner";
 import "./styles.css";
 
@@ -23,9 +23,10 @@ export const Dashboard = () => {
         }
         // Add the new post item to the server using the addPostItem() function from the postService module.
         addPostItem({user: name, time:currentDate, post: post});
+        writePostNodeFunction({username:name, post_text:post});
         // Update the items state variable with the new post item
         setItems(getAllPostItems);
-        // Reset the post state variable to an empty string.
+        // Reset the post state variable to an empty string. 
         setPost('');
     }
 

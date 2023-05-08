@@ -2,16 +2,35 @@ import os
 import boto3
 import json
 import hashlib
+import logging
 
 
-def handle(req):
+def handle(event, context):
     """ 
     Returns a json message containing the reponse from putting the given user data to the database
 
     Parameter req: json message containing username, name and password for user to be added to the users database
     """
 
-    reqData = json.loads(req)
+      #Set the CORS headers
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Content-Type': 'application/json'
+    }
+
+    #handle OPTIONS request
+
+    if event.method == 'OPTIONS':
+        return {
+            "statusCode": 204,
+            "body": "p",
+            "headers": headers
+        }
+
+    reqData = json.loads(event.body)
+    logging.warning(reqData)
 
     # Create the DynamoDB resource
     dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
@@ -53,4 +72,8 @@ def handle(req):
         }
     )
 
-    return json.dumps({"message": "User added successfully", "response": response})
+    return {
+        "statusCode": 200,
+        "body": "User added successfully", 
+        "headers": headers
+    }

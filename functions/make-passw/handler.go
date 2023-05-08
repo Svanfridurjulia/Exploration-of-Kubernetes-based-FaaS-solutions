@@ -86,6 +86,16 @@ func generatePassword() string {
 
 // Handle receives a http request and writes back a generated password
 func Handle(w http.ResponseWriter, r *http.Request) {
+	// Set CORS headers
+	w.Header().Set("Access-Control-Allow-Origin", "http://web-app.fabulousasaservice.com")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+	// Handle OPTIONS request and return immediately
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
 
 	defer r.Body.Close()
 

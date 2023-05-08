@@ -18,7 +18,7 @@ type Secret struct {
 // getSecrets returns a string
 // The string contains the password to the sender email, gotten from AWS secrets
 func getSecrets() string {
-	secretName := "email-pass"
+	secretName := "mail-password"
 	region := "eu-west-1"
 
 	config, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(region))
@@ -84,6 +84,17 @@ func sendMail(emailPassword string) {
 
 // Handle receives a http request
 func Handle(w http.ResponseWriter, r *http.Request) {
+
+	// Handle OPTIONS request and return immediately
+	if r.Method == "OPTIONS" {
+		w.Header().Set("Access-Control-Allow-Origin", "http://web-app.fabulousasaservice.com")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
+	defer r.Body.Close()
 
 	password := getSecrets()
 	sendMail(password)

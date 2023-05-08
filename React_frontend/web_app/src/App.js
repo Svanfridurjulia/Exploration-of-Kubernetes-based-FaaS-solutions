@@ -14,7 +14,6 @@ function App() {
 
   return (
 	<PostContext.Provider value={{posts}}>
-		<BrowserRouter>
 			<div className="App">
 				<Routes>
 					<Route exact path='/' element={ <HomePage /> }/>
@@ -24,7 +23,6 @@ function App() {
 					<Route exact path='/posts' element={<UserProfile/>}/>
 				</Routes>
 			</div>
-		</BrowserRouter>
 	</PostContext.Provider>
 	
 	);
