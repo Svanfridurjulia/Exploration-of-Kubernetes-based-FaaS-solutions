@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: write-user
-        image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:write-user-v7
+        image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:write-user-v1
         ports:
         - containerPort: 8080
 ---

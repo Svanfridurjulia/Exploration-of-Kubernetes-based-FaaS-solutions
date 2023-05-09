@@ -3,24 +3,24 @@ functions:
   get-translation:
     lang: python
     handler: ./get-translation
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:get-translation-v38
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:get-translation-v1
   make-passw:
     lang: golang-middleware
     handler: ./make-passw
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:make-passw-v4
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:make-passw-v1
   write-user:
     lang: python
     handler: ./write-user
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:write-user-v7
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:write-user-v1
   send-email:
     lang: golang-middleware
     handler: ./send-email
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:send-email-v7
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:send-email-v1
   authenticate-user:
     lang: node12
     handler: ./authenticate-user
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:authenticate-user-v14
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:authenticate-user-v1
   write-post:
     lang: node12
     handler: ./write-post
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:write-post-v22
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:write-post-v1

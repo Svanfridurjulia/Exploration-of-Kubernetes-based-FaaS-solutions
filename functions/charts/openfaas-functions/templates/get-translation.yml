@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: get-translation
-        image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:get-translation-v38
+        image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:get-translation-v1
         ports:
         - containerPort: 8080
 ---
@@ -35,3 +35,5 @@ spec:
       port: 80
       targetPort: 8080
   type: ClusterIP
+
+

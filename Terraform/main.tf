@@ -85,7 +85,9 @@ resource "aws_ecr_repository" "react_web_app" {
 # Creates the AWS secret for holding the email password used in the send-email function
 
 resource "aws_secretsmanager_secret" "email_password" {
-  name = "mail-password"
+  name = "admin-email-password"
+  recovery_window_in_days = 0 
+
 }
 
 # Setting the value of the email secret
@@ -181,7 +183,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.12"
 
-  cluster_name    = local.name
+  cluster_name    = "FinalEKSCluster"
   cluster_version = local.cluster_version
 
   vpc_id     = module.vpc.vpc_id
@@ -196,7 +198,7 @@ module "eks" {
 
       min_size     = 0
       max_size     = 7
-      desired_size = 5
+      desired_size = 7
 
     }
   }
@@ -249,7 +251,7 @@ resource "aws_dynamodb_table" "table2" {
 
 resource "kubernetes_namespace" "openfaas" {
   metadata {
-    name = "openfaas-test"
+    name = "openfaas"
   }
 }
 
@@ -257,7 +259,7 @@ resource "kubernetes_namespace" "openfaas" {
 
 resource "kubernetes_namespace" "openfaas_fn" {
   metadata {
-    name = "openfaas-fn-test"
+    name = "openfaas-fn"
   }
 }
 
@@ -270,7 +272,7 @@ depends_on = [
   repository = "https://openfaas.github.io/faas-netes/"
   chart      = "openfaas"
 
-  namespace = "openfaas-test"
+  namespace = "openfaas"
 
   set {
     name  = "faasnetes.imagePullPolicy"
@@ -279,7 +281,7 @@ depends_on = [
 
   set {
     name  = "functionNamespace"
-    value = "openfaas-fn-test"
+    value = "openfaas-fn"
   }
 
   set {
@@ -305,7 +307,7 @@ resource "null_resource" "openfaas_lb" {
 
   provisioner "local-exec" {
     command = <<-EOC
-      kubectl get svc gateway-external -n openfaas-test \
+      kubectl get svc gateway-external -n openfaas \
         --token="${data.aws_eks_cluster_auth.this.token}" \
         --server="${module.eks.cluster_endpoint}" \
         --insecure-skip-tls-verify=true \
@@ -330,6 +332,7 @@ resource "aws_route53_record" "openfaas_cname" {
   ttl     = "300"
   records = [data.local_file.lb_hostname.content]
 }
+
 
 
 #ArgoCD: Includes all blocks needed to set up the ArgoCD deployment on the cluster
@@ -409,7 +412,7 @@ module "eks_blueprints_kubernetes_addons" {
       target_revision    = "Svanfríður"
       add_on_application = false
       project_name       = "openfaas"
-      namespace          = "openfaas-fn-test"
+      namespace          = "openfaas-fn"
       sync_policy        = "automated"
       sync_options       = {
         validate = true
@@ -466,8 +469,7 @@ resource "kubernetes_deployment" "my-app" {
       spec {
         container {
           name  = "my-app"
-          image = "112172658  395.dkr.ecr.eu-west-1.amazonaws.com/react-web-app:web-app-v3"
-
+          image = "112172658395.dkr.ecr.eu-west-1.amazonaws.com/react-web-app:web-app-v1"
           port {
             container_port = 3000
           }
@@ -562,16 +564,11 @@ resource "helm_release" "grafana" {
     service:
       type: LoadBalancer
 
-      datasources:
-      - name: Prometheus
-        type: prometheus
-        access: proxy
-        url: http://prometheus-server.prometheus.svc.cluster.local
     EOT
   ]
 }
 
-# Null resource used to write the external hostname of the load balancer defined in the Helm release for Grafana
+# Null resource used to write the external hostname of the loadbalancer defined in the Helm release for Grafana
 # The value is used to configure the routing of the Grafana domain
 
 resource "null_resource" "grafana_lb" {
