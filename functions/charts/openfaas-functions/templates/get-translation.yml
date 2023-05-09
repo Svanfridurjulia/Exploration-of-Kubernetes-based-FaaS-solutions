@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: get-translation
-  namespace: openfaas-fn-test
+  namespace: openfaas-fn
   labels:
     app: get-translation
 spec:
@@ -25,7 +25,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: get-translation
-  namespace: openfaas-fn-test
+  namespace: openfaas-fn
 
 spec:
   selector:
