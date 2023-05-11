@@ -15,7 +15,7 @@ jobs:
         with:
           go-version: '1.17'
       - name: Install dependencies
-        run: cd functions/make-passw && go get .w
+        run: cd functions/make-passw && go get .
       - name: Build
         run: cd functions/make-passw && go build -v ./...
       - name: Test with the Go CLI
