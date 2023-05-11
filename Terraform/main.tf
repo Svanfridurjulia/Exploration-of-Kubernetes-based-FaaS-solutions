@@ -33,7 +33,7 @@ provider "helm" {
 # Defines local variables to be used within the configuration file. 
 
 locals {
-  name   = basename(path.cwd)
+  name   = "FinalEKSCluster"
   region = "eu-west-1"
 
   cluster_version = "1.24"
@@ -183,7 +183,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.12"
 
-  cluster_name    = "FinalEKSCluster"
+  cluster_name    = local.name
   cluster_version = local.cluster_version
 
   vpc_id     = module.vpc.vpc_id
@@ -198,7 +198,7 @@ module "eks" {
 
       min_size     = 0
       max_size     = 7
-      desired_size = 7
+      desired_size = 5
 
     }
   }
@@ -335,9 +335,9 @@ resource "aws_route53_record" "openfaas_cname" {
 
 
 
-#ArgoCD: Includes all blocks needed to set up the ArgoCD deployment on the cluster
+#Argo CD: Includes all blocks needed to set up the ArgoCD deployment on the cluster
 
-# This block generates a random password to be used as the admin password for the ArgoCD application.
+# This block generates a random password to be used as the admin password for the Argo CD application.
 # The password will have a length of 16 characters and will contain at least one uppercase letter, 
 # one lowercase letter, one digit, and one special character.
 
@@ -350,14 +350,14 @@ resource "random_password" "argocd" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-# This block creates an AWS Secrets Manager secret to store the admin password for the ArgoCD application.
+# This block creates an AWS Secrets Manager secret to store the admin password for the Argo CD application.
 
 resource "aws_secretsmanager_secret" "argocd" {
   name                    = "argocd"
   recovery_window_in_days = 0 
 }
 
-# Module for adding Kubernetes add-ons to the EKS cluster, including ArgoCD, KEDA, and Prometheus
+# Module for adding Kubernetes add-ons to the EKS cluster, including Argo CD, KEDA, and Prometheus
 
 module "eks_blueprints_kubernetes_addons" {
   source = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons"
@@ -409,11 +409,11 @@ module "eks_blueprints_kubernetes_addons" {
      openfaas = {
       path               = "functions/charts/openfaas-functions/"
       repo_url           = "https://github.com/Svanfridurjulia/Exploration-of-Kubernetes-based-FaaS-solutions.git"
-      target_revision    = "Svanfríður"
+      target_revision    = "main"
       add_on_application = false
       project_name       = "openfaas"
       namespace          = "openfaas-fn"
-      sync_policy        = "automated"
+      sync_policy        = "automated" 
       sync_options       = {
         validate = true
         prune    = true
@@ -445,7 +445,7 @@ module "eks_blueprints_kubernetes_addons" {
 
 # Defines a Kubernetes deployment for the containerized application which is the web app
 
-resource "kubernetes_deployment" "my-app" {
+resource "kubernetes_deployment" "my_app" {
   metadata {
     name = "my-app"
   }
@@ -481,7 +481,7 @@ resource "kubernetes_deployment" "my-app" {
 
 # Block which creates a Kubernetes service that exposes the web app deployment. 
 
-resource "kubernetes_service" "my-app" {
+resource "kubernetes_service" "my_app" {
   metadata {
     name = "my-app"
     annotations = {
@@ -509,7 +509,7 @@ resource "kubernetes_service" "my-app" {
 
 resource "null_resource" "my_app_lb" {
   depends_on = [
-    kubernetes_deployment.my-app
+    kubernetes_deployment.my_app
   ]
 
   provisioner "local-exec" {

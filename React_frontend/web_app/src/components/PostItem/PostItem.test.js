@@ -1,5 +1,4 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { translationPythonFunction } from '../../services/FunctionServices';
 import { PostItem } from './PostItem';
 
 jest.mock('../../services/FunctionServices');
@@ -20,18 +19,6 @@ describe('PostItem component', () => {
         expect(getByTestId('postedBy')).toHaveTextContent('Gunnar on 2023-05-05');
         expect(getByTestId('postMessage')).toHaveTextContent('Hallo heimur');
     });
-
-    // test('Translate button is clicked', async () => {
-    //     const response = '{"text": "Hola Mundo"}';
-    //     translationPythonFunction.mockResolvedValue(response);
-    //     const { getByTestId } = render(
-    //         <PostItem id={1} user="Gunnar" time="2023-05-05" post="Hallo heimur" />
-    //     );
-    //     fireEvent.click(getByTestId('translateButton'));
-    //     await waitFor(() =>
-    //         expect(getByTestId('translation')).toHaveTextContent('Spanish translation: Hola Mundo')
-    //     );
-    // });
 
     test('Translate button is not clicked', () => {
         const { queryByTestId } = render(

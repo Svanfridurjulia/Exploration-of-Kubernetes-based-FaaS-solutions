@@ -1,7 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { LogIn } from './LogIn';
 import { authenticationNodeFunction } from '../../services/FunctionServices';
-import { useNavigate } from 'react-router-dom';
 import { setCurrentUser } from '../../services/userService';
 
 jest.mock('../../services/FunctionServices');
@@ -26,12 +25,6 @@ describe('LogIn', () => {
         expect(pageTitle).toHaveTextContent('Log In');
     });
 
-    // test('Back button is clicked', () => {
-    //     const navigate = useNavigate();
-    //     render(<LogIn />);
-    //     fireEvent.click(screen.getByTestId('backButton'));
-    //     expect(navigate).toHaveBeenCalledWith('/');
-    // });
 
     test('Sends the correct information to authenticationNodeFunction', async () => {
         const response = {

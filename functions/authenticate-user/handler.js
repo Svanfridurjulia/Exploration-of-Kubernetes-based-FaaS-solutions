@@ -39,6 +39,7 @@ module.exports = async (event, context) => {
         return response;
     }
 
+    //Checking if the event.body is empty
     if (!event.body || Object.keys(event.body).length === 0) {
         const response = {
             statusCode: 400,
@@ -54,6 +55,7 @@ module.exports = async (event, context) => {
     const password = event.body.password;
 
 
+    // Checking if username and password are missing
     if (!username || !password) {
         const response = {
             statusCode: 400,
@@ -104,7 +106,7 @@ module.exports = async (event, context) => {
         const response = {
             statusCode: 500,
             headers: headers,
-            body: JSON.stringify({ message: "Error during authentication", errormessage: error }),
+            body: JSON.stringify({ message: "Error during authentication", errorMessage: error }),
         };
         return response;
     }
