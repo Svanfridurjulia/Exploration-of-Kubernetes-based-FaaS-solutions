@@ -48,7 +48,7 @@ export const SignUp = () => {
         event.preventDefault();
         // Call the appropriate OpenFaaS function to generate a random password
         const response = await passwordGoFunction();
-        // console.log(response);
+
         // Set the state variables to display the generated password
         setPwGenerated(true);
         setPw(response);

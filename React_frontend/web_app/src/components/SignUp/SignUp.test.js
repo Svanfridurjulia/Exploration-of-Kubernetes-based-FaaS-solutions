@@ -1,7 +1,6 @@
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { SignUp } from '../SignUp/SignUp';
 import { setCurrentUser } from '../../services/userService';
-import { passwordGoFunction, writeUserPythonFunction, sendEmailGoFunction } from '../../services/FunctionServices';
 
 // Mock the useNavigate hook
 jest.mock('react-router-dom', () => ({

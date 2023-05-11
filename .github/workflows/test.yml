@@ -2,7 +2,7 @@ name: Tests
 
 on:
   push:
-    branchers:
+    branches:
       - main
 
 jobs:
@@ -15,7 +15,7 @@ jobs:
         with:
           go-version: '1.17'
       - name: Install dependencies
-        run: cd functions/make-passw && go get .
+        run: cd functions/make-passw && go get .w
       - name: Build
         run: cd functions/make-passw && go build -v ./...
       - name: Test with the Go CLI
@@ -43,14 +43,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
-        working-directory: React_frontend/web_app/
+        working-directory: react_frontend/web_app/
         run: npm ci
       - name: Download deps
         uses: bahmutov/npm-install@v1
         with:
-          working-directory: React_frontend/web_app/
+          working-directory: react_frontend/web_app/
       - name: Run tests
-        working-directory: React_frontend/web_app/
+        working-directory: react_frontend/web_app/
         env:
           CI: false
         run: npm test

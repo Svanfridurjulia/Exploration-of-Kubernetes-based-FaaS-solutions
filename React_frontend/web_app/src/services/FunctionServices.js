@@ -1,10 +1,7 @@
 
 
 
-// const FUNCTIONS_URL = 'http://localhost:3005/function/';
 const FUNCTIONS_URL = 'http://functions.fabulousasaservice.com:8080/function/';
-
-// const FUNCTIONS_URL = 'http://a18983579ab35409298ddbf805c122d5-969766123.eu-west-1.elb.amazonaws.com:8080/function/';
 
 
 /**
@@ -52,7 +49,6 @@ export async function passwordGoFunction() {
 
         // Extract the generated password from the response body.
         const returnData = await resp.text();
-        console.log(returnData)
         return returnData;
 
     } catch (error) {
@@ -79,7 +75,6 @@ export async function translationPythonFunction(data) {
         });
         // Extract the translated text from the JSON in the response body.
         const returnData = await resp.json();
-        console.log(returnData);
         return returnData;
 
     } catch (error) {
@@ -106,7 +101,6 @@ export async function writeUserPythonFunction(data) {
         })
         // Extract the response data from the JSON in the response body.
         const returnData = await resp.json();
-        console.log(returnData)
         return returnData;
     }
     catch (error) {
@@ -178,7 +172,6 @@ export async function writePostNodeFunction(data) {
         });
         // Extract the response data from the JSON in the response body.
         const returnData = await resp.json();
-        console.log(returnData);
         return returnData;
 
     } catch (error) {

@@ -96,8 +96,7 @@ module.exports = async (event, context) => {
         'post_id' : {N: newPostId.toString()},
         'post_date' : {S: Date.now().toString()},
         'post_text': {S: postText},
-        'user_id': {N: userId.toString()},
-        'timestamp': {N: Date.now().toString()}
+        'user_id': {N: userId.toString()}
       }
     };
 
