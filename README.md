@@ -2,7 +2,12 @@
 
 This is a final project by three students finishing Bsc. in computer science and software engineering at Reykjavík University. 
 
-In this project we aim to explore the landscape for FaaS (Function as a Service) options on top of Kubernetes. The large cloud vendors have their own FaaS solutions such as AWS:Lambda, but that involves a different runtime, metrics and monitoring services for companies that are already running everything on Kubernetes. In this project, we want to explore how we can adapt a FaaS framework like OpenFaaS or KNative to help us make a well informed decision on what runtime we should choose for the future.  
+​In response to the industry-wide trend favoring lightweight functions over server-based services, this project delves into the exploration of function as a service (FaaS) options on top of Kubernetes. With the primary objective of making well-informed decisions regarding future runtime selections, the project focuses on adapting FaaS frameworks like OpenFaaS and Knative. 
+
+The project's ultimate goal extends beyond its immediate scope. Through the provision of detailed documentation evaluating various FaaS solutions, the project serves as a solid foundation for others seeking to embark on their own FaaS journey. With the intent of streamlining the initial steps involved in FaaS infrastructure setup, the project significantly reduces the time-consuming burden of preliminary research and configuration. Developers can now leverage the insights gained and readily begin crafting their own FaaS solutions. By sharing the knowledge accumulated during the project's research and development phase, this endeavor ultimately aims to support and empower those who aspire to create FaaS setups on Kubernetes.
+
+In conclusion, this project exemplifies the industry's ongoing shift towards lightweight functions and explores the feasibility of FaaS options on Kubernetes. The deliverables encompass a comprehensive infrastructure setup, user-friendly demonstrations, and extensive documentation, all aimed at accelerating the adoption and implementation of FaaS solutions.
+
 
 # How to run locally (all in terminal):
 
@@ -28,4 +33,4 @@ run React tests:
     cd web_app
     npm test
 
-Please refer to the operating manual for further information: 
+Please refer to the Operating Manual located at the root folder for further information 
