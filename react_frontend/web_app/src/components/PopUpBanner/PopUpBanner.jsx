@@ -6,7 +6,7 @@ export const PopupBanner = ({ text, onClose }) => {
   
     return (
         <div className="popupBanner">
-            <p>{text}</p>
+            <p className='popupText'>{text}</p>
             <button onClick={onClose}>Close</button>
         </div>
     );

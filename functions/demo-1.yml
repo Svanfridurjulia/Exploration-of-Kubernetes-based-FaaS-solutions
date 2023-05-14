@@ -1,0 +1,10 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://fabulousasaservice.com:8080
+functions:
+  demo-1:
+    lang: python3-http
+    handler: ./demo-1
+    image: demo-1:latest
+

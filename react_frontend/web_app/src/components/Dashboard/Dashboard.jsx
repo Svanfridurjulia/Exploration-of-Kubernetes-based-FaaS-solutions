@@ -5,7 +5,9 @@ import { getAllPostItems, addPostItem } from "../../services/postService";
 import { getCurrentUser } from "../../services/userService";
 import { demoPythonFunction, writePostNodeFunction } from "../../services/FunctionServices";
 import { PopupBanner } from "../PopUpBanner/PopUpBanner";
+import { ConfettiDemo } from "../ConfettiDemo/ConfettiDemo";
 import "./styles.css";
+
 
 export const Dashboard = () => {
     // Define state variables using the useState() hook.
@@ -41,7 +43,7 @@ export const Dashboard = () => {
     }
 
     // Close the popup banner.
-    const closePopup = () => {
+    const closePopup = () => { 
         setPopUpText('');
     };
     
@@ -54,6 +56,7 @@ export const Dashboard = () => {
                 </div>
                 <div className="centerElement"><h1 data-testid="banner" className="bannerTopic">Dashboard</h1>
                     <PopupBanner text={popUpText} onClose={closePopup}></PopupBanner>
+                    <ConfettiDemo text={popUpText}/>
                     <button data-testid="demoButton" onClick={handleClickDemo}>Demo</button>
                 </div>            
             </div>

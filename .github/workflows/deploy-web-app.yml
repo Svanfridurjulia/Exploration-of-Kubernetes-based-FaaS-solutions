@@ -3,7 +3,7 @@ name: Deploy web app to ECR
 on:
   push:
     branches:
-      - main
+      - demo
 
 env:
   AWS_REGION: eu-west-1
