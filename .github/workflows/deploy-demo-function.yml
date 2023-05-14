@@ -3,7 +3,7 @@ name: Deploy Demo Function
 on:
   push:
     branches:
-      - demo
+      - main
 
 env:
   AWS_REGION: eu-west-1
