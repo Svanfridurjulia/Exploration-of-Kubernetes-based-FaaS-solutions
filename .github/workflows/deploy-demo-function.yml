@@ -3,7 +3,7 @@ name: Deploy Demo Function
 on:
   push:
     branches:
-      - demo
+      - main 
 
 env:
   AWS_REGION: eu-west-1
@@ -37,5 +37,5 @@ jobs:
           cd /home/runner/work/Exploration-of-Kubernetes-based-FaaS-solutions/Exploration-of-Kubernetes-based-FaaS-solutions/
           cd functions/
           faas-cli build -f demo-function3.yml
-          docker push 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:demo-function3-v1
+          docker push 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:demo-function4-v1
 
