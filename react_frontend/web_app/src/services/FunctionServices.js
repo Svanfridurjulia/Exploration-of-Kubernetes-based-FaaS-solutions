@@ -140,7 +140,7 @@ export function sendEmailGoFunction(username) {
 export async function demoPythonFunction() {
     try {
         // Send a POST request to the demo endpoint on the server.
-        const resp = await fetch(FUNCTIONS_URL + 'demo-function8', {
+        const resp = await fetch(FUNCTIONS_URL + 'demo-test', {
             method: "POST",
             headers: {
                 'Content-type': 'application/json'
