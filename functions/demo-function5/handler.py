@@ -15,6 +15,7 @@ def handle(event, context):
             "body": "p",
             "headers": headers
         }
+    
     return {
         "statusCode": 200,
         "body": "Takk fyrir okkur!",
