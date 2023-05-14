@@ -24,7 +24,7 @@ export async function authenticationNodeFunction(data) {
         });
 
         // Extract the response data from the JSON in the response body.
-        const returnData = await resp.json();
+        const returnData = await resp.text();
         return returnData;
 
     } catch (error) {

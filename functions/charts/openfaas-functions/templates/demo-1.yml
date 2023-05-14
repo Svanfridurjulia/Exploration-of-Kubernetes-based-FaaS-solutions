@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: demo-1
-        image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:demo-1
+        image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:demo-1-v1
         ports:
         - containerPort: 8080
 ---
