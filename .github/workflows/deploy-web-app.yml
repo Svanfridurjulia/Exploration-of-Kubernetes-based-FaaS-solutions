@@ -31,6 +31,6 @@ jobs:
       - name: Build Docker image
         run: |
           cd ./react_frontend/web_app/
-          docker build -t $ECR_REGISTRY/react-web-app:web-app-v11 .
+          docker build -t $ECR_REGISTRY/react-web-app:web-app-v12 .
       - name: Push Docker image
-        run: docker push $ECR_REGISTRY/react-web-app:web-app-v11
+        run: docker push $ECR_REGISTRY/react-web-app:web-app-v12

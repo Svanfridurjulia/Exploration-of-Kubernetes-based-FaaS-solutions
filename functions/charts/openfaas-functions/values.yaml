@@ -24,9 +24,9 @@ functions:
     lang: node12
     handler: ./write-post
     image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:write-post-v1
-  demo-function5:
+  demo-function7:
     lang: python3-http
-    handler: ./demo-function6
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:demo-function6-v1
+    handler: ./demo-function7
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:demo-function7-v1
 
 
