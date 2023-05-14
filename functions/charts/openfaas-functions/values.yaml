@@ -24,6 +24,10 @@ functions:
     lang: node12
     handler: ./write-post
     image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:write-post-v1
+  fun-function:
+    lang: node12
+    handler: ./fun-function
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:fun-function
   
 
 
