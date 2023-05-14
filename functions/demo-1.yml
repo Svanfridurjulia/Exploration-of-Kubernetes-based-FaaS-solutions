@@ -6,5 +6,5 @@ functions:
   demo-1:
     lang: python3-http
     handler: ./demo-1
-    image: demo-1:latest
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:demo-1-v1
 
