@@ -3,7 +3,7 @@ name: Deploy OpenFaaS functions to ECR
 on:
   push:
     branches:
-      - main
+      - demo
 
 env:
   AWS_REGION: eu-west-1
@@ -36,10 +36,6 @@ jobs:
         run: |
           cd /home/runner/work/Exploration-of-Kubernetes-based-FaaS-solutions/Exploration-of-Kubernetes-based-FaaS-solutions/
           cd functions/
-          for file in *.yml; do
-            fn_name=$(basename "$file" .yml)
-            IMAGE_NAME=$(yq e ".functions.\"$fn_name\".image" "$file")
-            faas-cli build -f "$file"
-            docker push $IMAGE_NAME
-          done
+          faas-cli build -f demo-function1.yml
+          docker push 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:demo-function1-v2
 
