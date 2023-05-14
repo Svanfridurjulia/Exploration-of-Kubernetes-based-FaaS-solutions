@@ -26,7 +26,7 @@ functions:
     image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:write-post-v1
   demo1:
     lang: python3-http
-    handler: ./demo-function1
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:demo-function1-v2
+    handler: ./demo-function2
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:demo-function2-v1
 
 
