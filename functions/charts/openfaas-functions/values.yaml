@@ -24,10 +24,10 @@ functions:
     lang: node12
     handler: ./write-post
     image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:write-post-v1
-  best-function:
+  last-function:
     lang: python3-http
-    handler: ./best-function
-    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:best-function
+    handler: ./last-function
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:last-function
   
 
 
