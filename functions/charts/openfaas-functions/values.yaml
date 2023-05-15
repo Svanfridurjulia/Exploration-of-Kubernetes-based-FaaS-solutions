@@ -28,6 +28,9 @@ functions:
     lang: python3-http
     handler: ./last-function
     image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:last-function
-  
+  cowboy-function:
+    lang: python3-http
+    handler: ./cowboy-function
+    image: 112172658395.dkr.ecr.eu-west-1.amazonaws.com/faas-function-repository:cowboy-function
 
 
